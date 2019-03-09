@@ -1,6 +1,5 @@
 # sec
-**/certificate.jsk
-**/certificate.p12
+**/resources
 
 **/.idea/
 *.iml
