@@ -1,17 +1,32 @@
 package controllers;
 
-import models.Note;
+import models.Presence;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Component
 @RestController
 public class Test
 {
-    public String httpObjectPass(Note n)
+    @RequestMapping("/")
+    public String index() {
+        return "tested";
+    }
+
+    @RequestMapping("/presense")
+    public Presence presence()
     {
-        if(n==null)
-            return "Obiekt: null";
+        return new Presence();
+    }
+
+    @RequestMapping("/string")
+    public String string(String n)
+    {
+        if(n.equals(""))
+            return "<h1>Obiekt: null</h1>";
         else
-            return "Obiekt: " + n.getId() + ", " + n.getName() + ", " + n.getComment() + "!";
+            return "<h1>Obiekt: " + n + "!</h1>";
     }
     public String httpTest()
     {

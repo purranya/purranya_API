@@ -1,3 +1,7 @@
+# sec
+**/certificate.jsk
+**/certificate.p12
+
 **/.idea/
 *.iml
 

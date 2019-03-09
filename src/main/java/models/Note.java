@@ -6,6 +6,7 @@ public class Note
     private String name;
     private String comment;
 
+
     public Note(){}
 
     public Note(Long id, String name, String comment)
