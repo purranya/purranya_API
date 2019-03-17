@@ -1,4 +1,4 @@
-package app;
+package api_client;
 
 import javax.net.ssl.*;
 import java.io.BufferedReader;
