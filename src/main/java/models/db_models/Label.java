@@ -1,4 +1,4 @@
-package models;
+package models.db_models;
 
 public class Label
 {
@@ -7,16 +7,18 @@ public class Label
     private short color_r;
     private short color_b;
     private short color_g;
+    private Calendar calendar;
 
     public Label() {}
 
-    public Label(Long id, String name, short color_r, short color_b, short color_g)
+    public Label(Long id, String name, short color_r, short color_b, short color_g, Calendar calendar)
     {
         this.id = id;
         this.name = name;
         this.color_r = color_r;
         this.color_b = color_b;
         this.color_g = color_g;
+        this.calendar = calendar;
     }
 
     public Long getId()
@@ -67,5 +69,15 @@ public class Label
     public void setColor_g(short color_g)
     {
         this.color_g = color_g;
+    }
+
+    public Calendar getCalendar()
+    {
+        return calendar;
+    }
+
+    public void setCalendar(Calendar calendar)
+    {
+        this.calendar = calendar;
     }
 }

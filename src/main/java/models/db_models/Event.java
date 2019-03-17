@@ -1,4 +1,4 @@
-package models;
+package models.db_models;
 
 import org.joda.time.DateTime;
 
@@ -13,10 +13,11 @@ public class Event
 
     private boolean isArchived;
     private Label label;
+    private Calendar calendar;
 
     public Event(){}
 
-    public Event(Long id, String name, String comment, DateTime startDate, DateTime endDate, boolean isArchived, Label label)
+    public Event(Long id, String name, String comment, DateTime startDate, DateTime endDate, boolean isArchived, Label label, Calendar calendar)
     {
         this.id = id;
         this.name = name;
@@ -25,6 +26,7 @@ public class Event
         this.endDate = endDate;
         this.isArchived = isArchived;
         this.label = label;
+        this.calendar = calendar;
     }
 
     public Long getId()
@@ -95,5 +97,15 @@ public class Event
     public void setLabel(Label label)
     {
         this.label = label;
+    }
+
+    public Calendar getCalendar()
+    {
+        return calendar;
+    }
+
+    public void setCalendar(Calendar calendar)
+    {
+        this.calendar = calendar;
     }
 }

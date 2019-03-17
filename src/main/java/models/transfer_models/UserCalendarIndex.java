@@ -1,4 +1,6 @@
-package models;
+package models.transfer_models;
+
+import models.db_models.Calendar;
 
 import java.util.ArrayList;
 

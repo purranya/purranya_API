@@ -1,6 +1,6 @@
 package controllers;
 
-import models.Presence;
+import models.transfer_models.Presence;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

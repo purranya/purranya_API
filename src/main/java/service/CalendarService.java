@@ -1,6 +1,6 @@
 package service;
 
-import models.Calendar;
+import models.db_models.Calendar;
 
 import java.sql.*;
 
