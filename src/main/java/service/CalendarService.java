@@ -1,15 +1,13 @@
 package service;
 
+import app.DBInfo;
 import models.db_models.Calendar;
 
 import java.sql.*;
 
-/** TODO poprawić dane! */
 public class CalendarService {
-    private final String url = "";
     private Connection connection;
     private ResultSet resultSet;
-    private PreparedStatement preparedStatement = null;
 
     private final String CREATE_TABLE_SQL = "CREATE TABLE Calendar (\n" +
             "    \"id\" bigserial PRIMARY KEY,\n" +
@@ -17,17 +15,20 @@ public class CalendarService {
             "    \"comment\" varchar(255) CHECK(length(\"comment\")>0 and length(\"comment\")<256),\n" +
             "    \"appuser_id\" bigint NOT NULL REFERENCES Appuser(\"id\")\n" +
             ");";
-    private final String ADD_SQL = "INSERT INTO Calendar(name, comment) VALUES (?, ?)";
-    private final String UPDATE_SQL = "UPDATE Calendar SET name = ?, comment = ? where id = ?";
-    private final String UPDATE_NAME_SQL = "UPDATE Calendar SET name = ? where id = ?";
-    private final String UPDATE_COMMENT_SQL = "UPDATE Calendar SET comment = ? where id = ?";
-    private final String DELETE_SQL = "DELETE FROM Calendar WHERE id = ?";
+    private final String ADD_SQL = "INSERT INTO Calendar(\"name\", \"comment\") VALUES (?, ?)";
+    private final String UPDATE_SQL = "UPDATE Calendar SET \"name\" = ?, \"comment\" = ? where \"id\" = ?";
+    private final String DELETE_SQL = "DELETE FROM Calendar WHERE \"id\" = ?";
 
+    private PreparedStatement CREATE_TABLE_PSTM = null;
+    private PreparedStatement ADD_PSTM = null;
+    private PreparedStatement UPDATE_PSTM = null;
+    private PreparedStatement DELETE_PSTM = null;
 
     public CalendarService() throws SQLException {
+        DBInfo dbInfo = new DBInfo();
         boolean tableExists = false;
 
-        connection = DriverManager.getConnection(url);
+        connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
         resultSet = connection.getMetaData().getTables(null, null, null, null);
         while(resultSet.next())
             if("Calendar".equalsIgnoreCase(resultSet.getString("table_name"))) {
@@ -35,60 +36,49 @@ public class CalendarService {
                 break;
             }
         if(!tableExists) {
-            preparedStatement = connection.prepareStatement(CREATE_TABLE_SQL);
-            preparedStatement.executeUpdate();
+            CREATE_TABLE_PSTM = connection.prepareStatement(CREATE_TABLE_SQL);
+            CREATE_TABLE_PSTM.executeUpdate();
         }
-
-        preparedStatement = null;
     }
 
-    public void add(Calendar calendar) throws SQLException {
-        preparedStatement = connection.prepareStatement(ADD_SQL);
+    public boolean add(Calendar calendar) {
+        try {
+            ADD_PSTM = connection.prepareStatement(ADD_SQL);
 
-        preparedStatement.setString(1, calendar.getName());
-        preparedStatement.setString(2, calendar.getComment());
-        preparedStatement.executeUpdate();
-
-        preparedStatement = null;
+            ADD_PSTM.setString(1, calendar.getName());
+            ADD_PSTM.setString(2, calendar.getComment());
+            ADD_PSTM.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public void update(Calendar calendar, String newName, String newComment) throws SQLException {
-        preparedStatement = connection.prepareStatement(UPDATE_SQL);
-
-        preparedStatement.setString(1, newName);
-        preparedStatement.setString(2, newComment);
-        preparedStatement.setLong(3, calendar.getId());
-        preparedStatement.executeUpdate();
-
-        preparedStatement = null;
+    public boolean update(Calendar calendar, String newName, String newComment) {
+        try {
+            UPDATE_PSTM = connection.prepareStatement(UPDATE_SQL);
+            UPDATE_PSTM.setString(1, newName);
+            UPDATE_PSTM.setString(2, newComment);
+            UPDATE_PSTM.setLong(3, calendar.getId());
+            UPDATE_PSTM.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public void updateName(Calendar calendar, String newName) throws SQLException {
-        preparedStatement = connection.prepareStatement(UPDATE_NAME_SQL);
+    public boolean delete(Calendar calendar) {
+        try {
+            DELETE_PSTM = connection.prepareStatement(DELETE_SQL);
 
-        preparedStatement.setString(1, newName);
-        preparedStatement.setLong(2, calendar.getId());
-        preparedStatement.executeUpdate();
-
-        preparedStatement = null;
-    }
-
-    public void updateComment(Calendar calendar, String newComment) throws SQLException {
-        preparedStatement = connection.prepareStatement(UPDATE_COMMENT_SQL);
-
-        preparedStatement.setString(1, newComment);
-        preparedStatement.setLong(2, calendar.getId());
-        preparedStatement.executeUpdate();
-
-        preparedStatement = null;
-    }
-
-    public void delete(Calendar calendar) throws SQLException {
-        preparedStatement = connection.prepareStatement(DELETE_SQL);
-
-        preparedStatement.setLong(1, calendar.getId());
-        preparedStatement.executeUpdate();
-
-        preparedStatement = null;
+            DELETE_PSTM.setLong(1, calendar.getId());
+            DELETE_PSTM.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
