@@ -4,7 +4,7 @@ import models.db_models.Calendar;
 
 import java.sql.*;
 
-/** TODO wpisać URL!! */
+/** TODO poprawić dane! */
 public class CalendarService {
     private final String url = "";
     private Connection connection;
