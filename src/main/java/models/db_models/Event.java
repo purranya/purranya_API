@@ -11,20 +11,18 @@ public class Event
     private DateTime startDate;
     private DateTime endDate;
 
-    private boolean isArchived;
     private Label label;
     private Calendar calendar;
 
     public Event(){}
 
-    public Event(Long id, String name, String comment, DateTime startDate, DateTime endDate, boolean isArchived, Label label, Calendar calendar)
+    public Event(Long id, String name, String comment, DateTime startDate, DateTime endDate, Label label, Calendar calendar)
     {
         this.id = id;
         this.name = name;
         this.comment = comment;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isArchived = isArchived;
         this.label = label;
         this.calendar = calendar;
     }
@@ -77,16 +75,6 @@ public class Event
     public void setEndDate(DateTime endDate)
     {
         this.endDate = endDate;
-    }
-
-    public boolean isArchived()
-    {
-        return isArchived;
-    }
-
-    public void setArchived(boolean archived)
-    {
-        isArchived = archived;
     }
 
     public Label getLabel()
