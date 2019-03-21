@@ -9,12 +9,12 @@ public class UserService
 {
     private Connection connection;
     private ResultSet resultSet;
-    private static PreparedStatement ADD_USER_PSTM;
+    private static PreparedStatement ADD_PSTM;
     private static PreparedStatement CREATE_TABLE_PSTM;
-    private static PreparedStatement GET_USER_PSTM;
+    private static PreparedStatement SELECT_PSTM;
 
-    private static String ADD_USER_SQL = "INSERT INTO Appuser(\"username\",\"password\") VALUES(?,?)";
-    private static String GET_USER_SQL = "SELECT \"id\",\"username\",\"password\" FROM Appuser WHERE \"username\"=? and \"password\"=?  LIMIT 1";
+    private static String ADD_SQL = "INSERT INTO Appuser(\"username\",\"password\") VALUES(?,?)";
+    private static String SELECT_SQL = "SELECT \"id\",\"username\",\"password\" FROM Appuser WHERE \"username\"=? and \"password\"=?  LIMIT 1";
 
     private final String CREATE_TABLE_SQL="CREATE TABLE Appuser (\n" +
             "    \"id\" bigserial PRIMARY KEY,\n" +
@@ -54,13 +54,13 @@ public class UserService
     public boolean addUser(User user)
     {
         try {
-            if(ADD_USER_PSTM==null)
-                ADD_USER_PSTM=connection.prepareStatement(ADD_USER_SQL);
+            if(ADD_PSTM ==null)
+                ADD_PSTM =connection.prepareStatement(ADD_SQL);
 
-            ADD_USER_PSTM.setString(1,user.getUsername());
-            ADD_USER_PSTM.setString(2,user.getPassword_hash());
+            ADD_PSTM.setString(1,user.getUsername());
+            ADD_PSTM.setString(2,user.getPassword_hash());
 
-            ADD_USER_PSTM.execute();
+            ADD_PSTM.execute();
             return true;
 
         } catch ( SQLException e )
@@ -73,13 +73,13 @@ public class UserService
     public User getUser(String username, String hash)
     {
         try {
-            if(GET_USER_PSTM==null)
-                GET_USER_PSTM=connection.prepareStatement(GET_USER_SQL);
+            if(SELECT_PSTM ==null)
+                SELECT_PSTM =connection.prepareStatement(SELECT_SQL);
 
-            GET_USER_PSTM.setString(1,username);
-            GET_USER_PSTM.setString(2,hash);
+            SELECT_PSTM.setString(1,username);
+            SELECT_PSTM.setString(2,hash);
 
-            ResultSet rs = GET_USER_PSTM.executeQuery();
+            ResultSet rs = SELECT_PSTM.executeQuery();
             User u = null;
 
             if(rs.next())

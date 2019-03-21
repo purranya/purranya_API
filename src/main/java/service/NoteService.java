@@ -18,16 +18,12 @@ public class NoteService {
     private final String SELECT_SQL = "SELECT \"id\", \"name\", \"comment\", \"appuser_id\" FROM Note WHERE \"name\" = ? and \"comment\" = ? and \"appuser_id\" = ? LIMIT 1";
     private final String ADD_SQL = "INSERT INTO Note(\"name\", \"comment\", \"appuser_id\") VALUES (?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE Note SET \"name\" = ?, \"comment\" = ? WHERE \"id\" = ?";
-    private final String UPDATE_NAME_SQL = "UPDATE Note SET \"name\" = ? WHERE \"id\" = ?";
-    private final String UPDATE_COMMENT_SQL = "UPDATE Note SET \"comment\" WHERE \"id\" = ?";
     private final String DELETE_SQL = "DELETE FROM Note WHERE \"id\" = ?";
 
     private PreparedStatement CREATE_TABLE_PSTM = null;
     private PreparedStatement SELECT_PSTM = null;
     private PreparedStatement ADD_PSTM = null;
     private PreparedStatement UPDATE_PSTM = null;
-    private PreparedStatement UPDATE_NAME_PSTM = null;
-    private PreparedStatement UPDATE_COMMENT_PSTM = null;
     private PreparedStatement DELETE_PSTM = null;
 
     public NoteService() throws SQLException {
@@ -85,34 +81,6 @@ public class NoteService {
             UPDATE_PSTM.setString(2, newComment);
             UPDATE_PSTM.setLong(3, note.getId());
             UPDATE_PSTM.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean updateName(Note note, String newName) {
-        try {
-            UPDATE_NAME_PSTM = connection.prepareStatement(UPDATE_NAME_SQL);
-
-            UPDATE_NAME_PSTM.setString(1, newName);
-            UPDATE_NAME_PSTM.setLong(2, note.getId());
-            UPDATE_NAME_PSTM.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean updateComment(Note note, String newComment) {
-        try {
-            UPDATE_COMMENT_PSTM = connection.prepareStatement(UPDATE_COMMENT_SQL);
-
-            UPDATE_COMMENT_PSTM.setString(1, newComment);
-            UPDATE_COMMENT_PSTM.setLong(2, note.getId());
-            UPDATE_COMMENT_PSTM.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

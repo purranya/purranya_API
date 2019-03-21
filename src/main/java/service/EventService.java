@@ -86,7 +86,7 @@ public class EventService {
         }
     }
 
-    public boolean update(Event event, Calendar calendar, Label label, String newName, String newComment, DateTime newStartDate, DateTime newEndDate, Long newLabelId) {
+    public boolean update(Event event, Calendar calendar, Label label, String newName, String newComment, DateTime newStartDate, DateTime newEndDate, Long newLabel) {
         try {
             UPDATE_PSTM = connection.prepareStatement(UPDATE_SQL);
 
@@ -95,7 +95,7 @@ public class EventService {
             UPDATE_PSTM.setString(3, newStartDate.toString());
             UPDATE_PSTM.setString(4, newEndDate.toString());
             UPDATE_PSTM.setLong(5, calendar.getId());
-            UPDATE_PSTM.setLong(6, label.getId());
+            UPDATE_PSTM.setLong(6, newLabel);
             UPDATE_PSTM.setLong(7, event.getId());
             UPDATE_PSTM.executeUpdate();
             return true;

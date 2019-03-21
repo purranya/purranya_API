@@ -22,16 +22,12 @@ public class LabelService {
             " WHERE \"name\" = ? and \"color_r\" = ? and \"color_g\" = ? and \"color_b\" = ? and \"calendar_id\" = ?";
     private static String ADD_SQL = "INSERT INTO Label(\"name\", \"color_r\", \"color_g\", \"color_b\", \"calendar_id\") VALUES(?, ?, ?, ?, ?)";
     private static String UPDATE_SQL = "UPDATE Label SET \"name\" = ?, \"color_r\" = ?, \"color_g\" = ?, \"color_b\" = ? WHERE \"id\" = ?";
-    private static String UPDATE_NAME_SQL = "UPDATE Label SET \"name\" = ? WHERE \"id\" = ?";
-    private static String UPDATE_COLOR_SQL = "UPDATE Label SET \"color_r\" = ?, \"color_g\" = ?, \"color_b\" = ? WHERE \"id\" = ?";
     private static String DELETE_SQL = "DELETE FROM Label WHERE \"id\" = ?";
 
     private PreparedStatement CREATE_TABLE_PSTM = null;
     private PreparedStatement SELECT_PSTM = null;
     private PreparedStatement ADD_PSTM = null;
     private PreparedStatement UPDATE_PSTM = null;
-    private PreparedStatement UPDATE_NAME_PSTM = null;
-    private PreparedStatement UPDATE_COLOR_PSTM = null;
     private PreparedStatement DELETE_PSTM = null;
 
     public LabelService() throws SQLException {
@@ -94,36 +90,6 @@ public class LabelService {
             UPDATE_PSTM.setShort(4, newColor_b);
             UPDATE_PSTM.setLong(5, label.getId());
             UPDATE_PSTM.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean updateName(Label label, String newName) {
-        try {
-            UPDATE_NAME_PSTM = connection.prepareStatement(UPDATE_NAME_SQL);
-
-            UPDATE_NAME_PSTM.setString(1, newName);
-            UPDATE_NAME_PSTM.setLong(2, label.getId());
-            UPDATE_NAME_PSTM.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean updateColor(Label label, short newColor_r, short newColor_g, short newColor_b) {
-        try {
-            UPDATE_COLOR_PSTM = connection.prepareStatement(UPDATE_COLOR_SQL);
-
-            UPDATE_COLOR_PSTM.setShort(1, newColor_r);
-            UPDATE_COLOR_PSTM.setShort(2, newColor_g);
-            UPDATE_COLOR_PSTM.setShort(3, newColor_b);
-            UPDATE_COLOR_PSTM.setLong(4, label.getId());
-            UPDATE_COLOR_PSTM.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
