@@ -2,6 +2,7 @@ package service;
 
 import app.DBInfo;
 import models.db_models.Calendar;
+import models.db_models.User;
 
 import java.sql.*;
 
@@ -15,10 +16,13 @@ public class CalendarService {
             "    \"comment\" varchar(255) CHECK(length(\"comment\")>0 and length(\"comment\")<256),\n" +
             "    \"appuser_id\" bigint NOT NULL REFERENCES Appuser(\"id\")\n" +
             ");";
-    private final String ADD_SQL = "INSERT INTO Calendar(\"name\", \"comment\") VALUES (?, ?)";
-    private final String UPDATE_SQL = "UPDATE Calendar SET \"name\" = ?, \"comment\" = ? where \"id\" = ?";
+    private final String SELECT_SQL = "SELECT \"id\", \"name\", \"comment\", \"appuser_id\" FROM Calendar " +
+            "WHERE \"name\" = ? AND \"comment\" = ? AND \"appuser_id\" = ?";
+    private final String ADD_SQL = "INSERT INTO Calendar(\"name\", \"comment\",\"appuser_id\") VALUES (?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE Calendar SET \"name\" = ?, \"comment\" = ? WHERE \"id\" = ?";
     private final String DELETE_SQL = "DELETE FROM Calendar WHERE \"id\" = ?";
 
+    private PreparedStatement SELECT_PSTM = null;
     private PreparedStatement CREATE_TABLE_PSTM = null;
     private PreparedStatement ADD_PSTM = null;
     private PreparedStatement UPDATE_PSTM = null;
@@ -41,12 +45,27 @@ public class CalendarService {
         }
     }
 
-    public boolean add(Calendar calendar) {
+    public boolean select(Calendar calendar, User user) {
+        try {
+            SELECT_PSTM = connection.prepareStatement(SELECT_SQL);
+
+            SELECT_PSTM.setString(1, calendar.getName());
+            SELECT_PSTM.setString(2, calendar.getComment());
+            SELECT_PSTM.setLong(3, user.getId());
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean add(Calendar calendar, User user) {
         try {
             ADD_PSTM = connection.prepareStatement(ADD_SQL);
 
             ADD_PSTM.setString(1, calendar.getName());
             ADD_PSTM.setString(2, calendar.getComment());
+            ADD_PSTM.setLong(3, user.getId());
             ADD_PSTM.executeUpdate();
             return true;
         } catch (SQLException e) {
