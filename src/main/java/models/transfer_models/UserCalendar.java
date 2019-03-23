@@ -6,15 +6,15 @@ import models.db_models.Label;
 
 import java.util.ArrayList;
 
-public class UserCalendarRequest
+public class UserCalendar
 {
     private Calendar calendar;
     private ArrayList<Label> labels;
     private ArrayList<Event> events;
 
-    public UserCalendarRequest(){}
+    public UserCalendar(){}
 
-    public UserCalendarRequest(Calendar calendar, ArrayList<Label> labels, ArrayList<Event> events)
+    public UserCalendar(Calendar calendar, ArrayList<Label> labels, ArrayList<Event> events)
     {
         this.calendar = calendar;
         this.labels = labels;

@@ -2,5 +2,5 @@ package models.transfer_models;
 
 public enum LoginStatus
 {
-    LOGIN_SUCCESS,LOGIN_FAILED,LOGIN_ERROR
+    LOGIN_SUCCESS,LOGIN_FAILED
 }

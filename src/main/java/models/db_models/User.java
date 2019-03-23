@@ -43,5 +43,8 @@ public class User
         this.password_hash = password_hash;
     }
 
-
+    public boolean isValid()
+    {
+        return true;
+    }
 }

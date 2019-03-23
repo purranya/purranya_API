@@ -83,4 +83,6 @@
 **/.mvn/timing.properties
 **/.mvn/wrapper/maven-wrapper.jar
 
+**/.attach_pid*
+
 
