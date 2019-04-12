@@ -112,6 +112,13 @@ public class CalendarTests {
         assertFalse(calendar.isUserIdValid());
     }
 
+    @Test
+    @DisplayName("Checking if user ID is valid and returns false because ID is null")
+    void isUserIdValid3Test() {
+        calendar.setUser_id(null);
+        assertFalse(calendar.isUserIdValid());
+    }
+
     @AfterEach
     void cleanUp() {
         calendar = null;
