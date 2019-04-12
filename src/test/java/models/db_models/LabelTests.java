@@ -128,6 +128,19 @@ public class LabelTests {
         assertFalse(label.isCalendarIdValid());
     }
 
+    @Test
+    @DisplayName("Checking if label is valid and returns true")
+    void isValidTest() {
+        assertTrue(label.isValid());
+    }
+
+    @Test
+    @DisplayName("Checking if label is valid and returns false")
+    void isValid2Test() {
+        label.setCalendar_id(-1L);
+        assertFalse(label.isValid());
+    }
+
     @AfterEach
     void cleanUp() {
         user = null;
