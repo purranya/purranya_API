@@ -1,6 +1,6 @@
 package controllers;
 
-import Utils.PasswordUtils;
+import utils.PasswordUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.db_models.User;
 import models.transfer_models.Login;
