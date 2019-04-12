@@ -17,16 +17,16 @@ public class CalendarService {
 
     private static String SQL_SELECT_BY_ID = "SELECT \"id\",\"name\",\"comment\",\"user_id\" FROM Calendar WHERE \"id\" = ? LIMIT 1";
     private static String SQL_SELECT_BY_USER = "SELECT \"id\",\"name\",\"comment\",\"user_id\" FROM Calendar WHERE \"user_id\" = ?";
-    private static String SQL_ADD = "INSERT INTO Calendar(\"id\",\"name\",\"comment\",\"user_id\") VALUES(?,?,?,?)";
+    private static String SQL_ADD = "INSERT INTO Calendar(\"name\",\"comment\",\"user_id\") VALUES(?,?,?)";
     private static String SQL_UPDATE = "UPDATE Calendar SET \"name\"=?,\"comment\"=?,\"user_id\"=? WHERE \"id\"=?";
     private static String SQL_DELETE = "DELETE FROM Calendar WHERE \"id\"=?";
 
     public CalendarService() {
-        DBInfo db = new DBInfo();
+        DBInfo dbInfo = new DBInfo();
 
         try
         {
-            connection = DriverManager.getConnection(db.get("jdbc_conn"), db.get("db_username"), db.get("db_password"));
+            connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -63,10 +63,9 @@ public class CalendarService {
             if(ADD_PSTM==null)
                 ADD_PSTM = connection.prepareStatement(SQL_ADD);
 
-            ADD_PSTM.setLong(1,calendar.getId());
-            ADD_PSTM.setString(2, calendar.getName());
-            ADD_PSTM.setString(3, calendar.getComment());
-            ADD_PSTM.setLong(4, calendar.getUser_id());
+            ADD_PSTM.setString(1, calendar.getName());
+            ADD_PSTM.setString(2, calendar.getComment());
+            ADD_PSTM.setLong(3, calendar.getUser_id());
             int addedCount = ADD_PSTM.executeUpdate();
             return addedCount>0;
         } catch (Exception e) {
