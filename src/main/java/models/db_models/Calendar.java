@@ -2,6 +2,9 @@ package models.db_models;
 
 import utils.ValidationUtils;
 
+import static utils.ValidationUtils.length;
+import static utils.ValidationUtils.name;
+
 public class Calendar
 {
     private Long id;
@@ -69,14 +72,13 @@ public class Calendar
     }
 
     public boolean validateName() {
-        return (ValidationUtils.length(name, 1, 50) &&
-            name != null &&
-            !name.equals("") &&
-            name.matches("^[-a-zA-Z0-9_]+$"));
+        return (name != null &&
+                length(name, 1, 50) &&
+                name(name));
     }
 
     public boolean validateComment() {
-        return (ValidationUtils.length(name, 0, 255) &&
-            comment != null);
+        return (comment != null &&
+                length(name, 0, 255));
     }
 }
