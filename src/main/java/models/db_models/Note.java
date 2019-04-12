@@ -76,7 +76,7 @@ public class Note
 
     public boolean isCommentValid() {
         return (comment != null &&
-                length(name, 0, 255));
+                length(comment, 0, 255));
     }
 
     public boolean isUserIdValid()
