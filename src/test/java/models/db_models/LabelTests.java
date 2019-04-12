@@ -141,6 +141,19 @@ public class LabelTests {
         assertFalse(label.isValid());
     }
 
+    @Test
+    @DisplayName("Checking if color is valid and returns true")
+    void isColorValidTest() {
+        assertTrue(label.isColorValid());
+    }
+
+    @Test
+    @DisplayName("Checking if color is valid and returns false")
+    void isColorValid2Test() {
+        label.setColor_r(-5);
+        assertFalse(label.isColorValid());
+    }
+
     @AfterEach
     void cleanUp() {
         user = null;

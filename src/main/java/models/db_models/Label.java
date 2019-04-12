@@ -75,9 +75,7 @@ public class Label
     public boolean isValid()
     {
         return isNameValid() &&
-                isColorRValid() &&
-                isColorGValid() &&
-                isColorBValid() &&
+                isColorValid() &&
                 isCalendarIdValid();
     }
 
@@ -98,6 +96,8 @@ public class Label
     public boolean isColorGValid() {
         return (color_g >= 0 && color_g <= 255);
     }
+
+    public boolean isColorValid() { return (isColorRValid() && isColorGValid() && isColorBValid()); }
 
     public boolean isCalendarIdValid()
     {
