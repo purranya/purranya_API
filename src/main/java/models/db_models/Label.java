@@ -1,5 +1,8 @@
 package models.db_models;
 
+import static utils.ValidationUtils.length;
+import static utils.ValidationUtils.name;
+
 public class Label
 {
     private Long id;
@@ -67,4 +70,39 @@ public class Label
     public void setCalendar_id(Long calendar_id) {
         this.calendar_id = calendar_id;
     }
+
+
+    public boolean isValid()
+    {
+        return isNameValid() &&
+                isColorRValid() &&
+                isColorGValid() &&
+                isColorBValid() &&
+                isCalendarIdValid();
+    }
+
+    public boolean isNameValid() {
+        return (name != null &&
+                length(name, 1, 50) &&
+                name(name));
+    }
+
+    public boolean isColorRValid() {
+        return (color_r >= 0 && color_r <= 255);
+    }
+
+    public boolean isColorBValid() {
+        return (color_b >= 0 && color_b <= 255);
+    }
+
+    public boolean isColorGValid() {
+        return (color_g >= 0 && color_g <= 255);
+    }
+
+    public boolean isCalendarIdValid()
+    {
+        return calendar_id != null && calendar_id > 0;
+    }
+
+
 }
