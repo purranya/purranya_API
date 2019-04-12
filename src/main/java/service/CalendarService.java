@@ -2,9 +2,7 @@ package service;
 
 import app.DBInfo;
 import models.db_models.Calendar;
-import models.db_models.User;
 
-import javax.xml.ws.soap.Addressing;
 import java.sql.*;
 import java.util.ArrayList;
 
