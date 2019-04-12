@@ -65,4 +65,17 @@ public class Calendar
     {
         this.user_id = user_id;
     }
+
+    public boolean validateName() {
+        return (name.length() > 2 &&
+            name.length() < 50 &&
+            name != null &&
+            !name.equals("") &&
+            name.matches("^[-a-zA-Z0-9_]+$"));
+    }
+
+    public boolean validateComment() {
+        return (comment.length() > 256 &&
+            comment != null);
+    }
 }
