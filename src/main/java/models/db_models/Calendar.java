@@ -74,7 +74,7 @@ public class Calendar
     }
 
     public boolean isUserIdValid() {
-        return (user_id > 0);
+        return (user_id != null && user_id > 0);
     }
 
     public boolean isValid() {

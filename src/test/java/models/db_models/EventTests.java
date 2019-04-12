@@ -1,6 +1,8 @@
 package models.db_models;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,9 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class EventTests {
     private Event event;
 
+    static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
     @BeforeEach
     void setUp() {
-        event = new Event(null, "Note1","Lorem Ipsum and something else here", new DateTime("12-06-2019 13:40"),new DateTime("14-06-2019 13:40"), 1L,1L);
+        event = new Event(null, "Note1","Lorem Ipsum and something else here", DateTime.parse("2019-06-12 13:40:00",dateTimeFormatter),DateTime.parse("2019-06-14 13:40:00",dateTimeFormatter), 1L,1L);
     }
 
     @Test
@@ -119,6 +123,32 @@ public class EventTests {
     void isCalendarIdValid3Test() {
         event.setCalendar_id(0L);
         assertFalse(event.isCalendarIdValid());
+    }
+
+    @Test
+    @DisplayName("Checking if start date is valid and returns true")
+    void isStartDateValid() {
+        assertTrue(event.isStartDateValid());
+    }
+
+    @Test
+    @DisplayName("Checking if start date is valid and returns false")
+    void isStartDateValid2() {
+        event.setStartDate(DateTime.parse("2019-06-15 13:40:00",dateTimeFormatter));
+        assertFalse(event.isStartDateValid());
+    }
+
+    @Test
+    @DisplayName("Checking if end date is valid and returns true")
+    void isEndDateValid() {
+        assertTrue(event.isEndDateValid());
+    }
+
+    @Test
+    @DisplayName("Checking if end date is valid and returns false")
+    void isEndDateValid2() {
+        event.setEndDate(DateTime.parse("2019-06-11 13:40:00",dateTimeFormatter));
+        assertFalse(event.isEndDateValid());
     }
 
     @Test
