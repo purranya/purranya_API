@@ -7,14 +7,14 @@ public class Label
 {
     private Long id;
     private String name;
-    private short color_r;
-    private short color_b;
-    private short color_g;
+    private int color_r;
+    private int color_b;
+    private int color_g;
     private Long calendar_id;
 
     public Label() {}
 
-    public Label(Long id, String name, short color_r, short color_b, short color_g, Long calendar_id) {
+    public Label(Long id, String name, int color_r, int color_b, int color_g, Long calendar_id) {
         this.id = id;
         this.name = name;
         this.color_r = color_r;
@@ -39,27 +39,27 @@ public class Label
         this.name = name;
     }
 
-    public short getColor_r() {
+    public int getColor_r() {
         return color_r;
     }
 
-    public void setColor_r(short color_r) {
+    public void setColor_r(int color_r) {
         this.color_r = color_r;
     }
 
-    public short getColor_b() {
+    public int getColor_b() {
         return color_b;
     }
 
-    public void setColor_b(short color_b) {
+    public void setColor_b(int color_b) {
         this.color_b = color_b;
     }
 
-    public short getColor_g() {
+    public int getColor_g() {
         return color_g;
     }
 
-    public void setColor_g(short color_g) {
+    public void setColor_g(int color_g) {
         this.color_g = color_g;
     }
 
