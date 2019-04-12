@@ -13,7 +13,7 @@ import service.UserService;
 
 @Component
 @RestController
-public class CallendarController
+public class CalendarController
 {
     UserService userService;
     CalendarService calendarService;

@@ -10,8 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 public class Main
 {
-
-
     public static void main(String[] args)
     {
         ApplicationContext applicationContext = SpringApplication.run(Main.class, args);
