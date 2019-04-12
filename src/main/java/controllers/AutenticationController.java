@@ -32,7 +32,7 @@ public class AutenticationController
             e.printStackTrace();
         }
 
-        User u = userService.getUser(l.getUsername(), PasswordUtils.sha256(l.getPassword()));
+        User u = userService.getByLogin(l.getUsername(), PasswordUtils.sha256(l.getPassword()));
 
         try
         {
@@ -67,7 +67,7 @@ public class AutenticationController
 
         try
         {
-            boolean added = userService.addUser(u);
+            boolean added = userService.add(u);
             if(added)
                 return om.writeValueAsString(RegisterStatus.REGISTER_SUCCESS);
             else
