@@ -1,7 +1,5 @@
 package models.db_models;
 
-import utils.ValidationUtils;
-
 import static utils.ValidationUtils.length;
 import static utils.ValidationUtils.name;
 
@@ -71,14 +69,18 @@ public class Calendar
         this.user_id = user_id;
     }
 
-    public boolean validateName() {
+    public boolean isNameValid() {
         return (name != null &&
                 length(name, 1, 50) &&
                 name(name));
     }
 
-    public boolean validateComment() {
+    public boolean isCommentValid() {
         return (comment != null &&
-                length(name, 0, 255));
+                length(comment, 0, 255));
+    }
+
+    public boolean isValid() {
+        return(isNameValid() && isCommentValid());
     }
 }
