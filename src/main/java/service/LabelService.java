@@ -5,108 +5,137 @@ import models.db_models.Calendar;
 import models.db_models.Label;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class LabelService {
     private Connection connection;
-    private ResultSet resultSet;
 
-    private static String CREATE_TABLE_SQL = "CREATE TABLE Label (\n" +
-            "    \"id\" bigserial PRIMARY KEY,\n" +
-            "    \"name\" varchar(50) CHECK(length(\"name\")>1 and length(\"name\")<51) NOT NULL,\n" +
-            "    \"color_r\" smallint CHECK(\"color_r\">=0 and \"color_r\"<256) NOT NULL,\n" +
-            "    \"color_b\" smallint CHECK(\"color_b\">=0 and \"color_b\"<256) NOT NULL,\n" +
-            "    \"color_g\" smallint CHECK(\"color_g\">=0 and \"color_g\"<256) NOT NULL,\n" +
-            "    \"calendar_id\" bigint NOT NULL REFERENCES Calendar(\"id\")\n" +
-            ");";
-    private static String SELECT_SQL = "SELECT \"id\", \"name\", \"color_r\", \"color_g\", \"color_b\", \"calendar_id\" FROM Label" +
-            " WHERE \"name\" = ? and \"color_r\" = ? and \"color_g\" = ? and \"color_b\" = ? and \"calendar_id\" = ?";
-    private static String ADD_SQL = "INSERT INTO Label(\"name\", \"color_r\", \"color_g\", \"color_b\", \"calendar_id\") VALUES(?, ?, ?, ?, ?)";
-    private static String UPDATE_SQL = "UPDATE Label SET \"name\" = ?, \"color_r\" = ?, \"color_g\" = ?, \"color_b\" = ? WHERE \"id\" = ?";
-    private static String DELETE_SQL = "DELETE FROM Label WHERE \"id\" = ?";
+    private static String SQL_SELECT_BY_ID = "SELECT \"id\", \"name\", \"color_r\", \"color_g\", \"color_b\", \"calendar_id\" FROM Label WHERE \"id\"=? LIMIT 1";
+    private static String SQL_ADD = "INSERT INTO Label(\"name\", \"color_r\", \"color_g\", \"color_b\", \"calendar_id\") VALUES(?, ?, ?, ?, ?)";
+    private static String SQL_UPDATE = "UPDATE Label SET \"name\" = ?, \"color_r\" = ?, \"color_g\" = ?, \"color_b\" = ?, \"calendar_id\" = ? WHERE \"id\" = ?";
+    private static String SQL_DELETE = "DELETE FROM Label WHERE \"id\" = ?";
+    private static String SQL_SELECT_BY_CALENDAR = "SELECT \"id\", \"name\", \"color_r\", \"color_g\", \"color_b\", \"calendar_id\" FROM Label WHERE \"calendar_id\"=?";
 
-    private PreparedStatement CREATE_TABLE_PSTM = null;
-    private PreparedStatement SELECT_PSTM = null;
+    private PreparedStatement SELECT_BY_ID_PSTM = null;
+    private PreparedStatement SELECT_BY_CALENDAR_PSTM = null;
     private PreparedStatement ADD_PSTM = null;
     private PreparedStatement UPDATE_PSTM = null;
     private PreparedStatement DELETE_PSTM = null;
 
-    public LabelService() throws SQLException {
+    public LabelService(){
         DBInfo dbInfo = new DBInfo();
-        boolean tableExists = false;
 
-        connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
-        resultSet = connection.getMetaData().getTables(null, null, null, null);
-        while(resultSet.next())
-            if("Label".equalsIgnoreCase(resultSet.getString("table_name"))) {
-                tableExists = true;
-                break;
-            }
-        if(!tableExists) {
-            CREATE_TABLE_PSTM = connection.prepareStatement(CREATE_TABLE_SQL);
-            CREATE_TABLE_PSTM.executeUpdate();
-        }
-    }
-
-    public boolean select(Calendar calendar, Label label) {
-        try {
-            SELECT_PSTM = connection.prepareStatement(SELECT_SQL);
-
-            SELECT_PSTM.setString(1, label.getName());
-            SELECT_PSTM.setShort(2, label.getColor_r());
-            SELECT_PSTM.setShort(3, label.getColor_g());
-            SELECT_PSTM.setShort(4, label.getColor_b());
-            SELECT_PSTM.setLong(5, calendar.getId());
-            SELECT_PSTM.executeUpdate();
-            return true;
-        } catch (SQLException e) {
+        try
+        {
+            connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
+        } catch (Exception e)
+        {
             e.printStackTrace();
-            return false;
         }
     }
 
-    public boolean add(Calendar calendar, Label label) {
+    public Label getById(Long id){
         try {
-            ADD_PSTM = connection.prepareStatement(ADD_SQL);
+            if(SELECT_BY_ID_PSTM==null)
+                SELECT_BY_ID_PSTM = connection.prepareStatement(SQL_SELECT_BY_ID);
+
+            SELECT_BY_ID_PSTM.setLong(1, id);
+            ResultSet rs = SELECT_BY_ID_PSTM.executeQuery();
+
+            if(rs.next())
+            {
+                Label l = new Label();
+                l.setId(rs.getLong(1));
+                l.setName(rs.getString(2));
+                l.setColor_r(rs.getInt(3));
+                l.setColor_g(rs.getInt(4));
+                l.setColor_b(rs.getInt(5));
+                l.setCalendar_id(rs.getLong(6));
+                return l;
+            }
+            else
+                return null;
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean add(Label label) {
+        try {
+            if(ADD_PSTM==null)
+            ADD_PSTM = connection.prepareStatement(SQL_ADD);
 
             ADD_PSTM.setString(1, label.getName());
-            ADD_PSTM.setShort(2, label.getColor_r());
-            ADD_PSTM.setShort(3, label.getColor_g());
-            ADD_PSTM.setShort(4, label.getColor_b());
-            ADD_PSTM.setLong(5, calendar.getId());
-            return true;
+            ADD_PSTM.setInt(2, label.getColor_r());
+            ADD_PSTM.setInt(3, label.getColor_g());
+            ADD_PSTM.setInt(4, label.getColor_b());
+            ADD_PSTM.setLong(5, label.getCalendar_id());
+            int added = ADD_PSTM.executeUpdate();
+            return added>0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean update(Label label, String newName, short newColor_r, short newColor_g, short newColor_b) {
+    public boolean update(Label label) {
         try {
-            UPDATE_PSTM = connection.prepareStatement(UPDATE_SQL);
+            if(UPDATE_PSTM==null)
+                UPDATE_PSTM = connection.prepareStatement(SQL_UPDATE);
 
-            UPDATE_PSTM.setString(1, newName);
-            UPDATE_PSTM.setShort(2, newColor_r);
-            UPDATE_PSTM.setShort(3, newColor_g);
-            UPDATE_PSTM.setShort(4, newColor_b);
-            UPDATE_PSTM.setLong(5, label.getId());
-            UPDATE_PSTM.executeUpdate();
-            return true;
+            UPDATE_PSTM.setString(1, label.getName());
+            UPDATE_PSTM.setInt(2, label.getColor_r());
+            UPDATE_PSTM.setInt(3, label.getColor_g());
+            UPDATE_PSTM.setInt(4, label.getColor_b());
+            UPDATE_PSTM.setLong(5,label.getCalendar_id());
+            UPDATE_PSTM.setLong(6, label.getId());
+            int updated = UPDATE_PSTM.executeUpdate();
+            return updated>0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean delete(Label label) {
+    public boolean delete(Long id) {
         try {
-            DELETE_PSTM = connection.prepareStatement(DELETE_SQL);
+            if(DELETE_PSTM==null)
+                DELETE_PSTM = connection.prepareStatement(SQL_DELETE);
 
-            DELETE_PSTM.setLong(1, label.getId());
-            DELETE_PSTM.executeUpdate();
-            return true;
+            DELETE_PSTM.setLong(1, id);
+            int deleted = DELETE_PSTM.executeUpdate();
+            return deleted>0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public ArrayList<Label> getByCalendar(Long id)
+    {
+        try {
+            if(SELECT_BY_CALENDAR_PSTM==null)
+                SELECT_BY_CALENDAR_PSTM = connection.prepareStatement(SQL_SELECT_BY_CALENDAR);
+
+            SELECT_BY_CALENDAR_PSTM.setLong(1, id);
+            ResultSet rs = SELECT_BY_CALENDAR_PSTM.executeQuery();
+            ArrayList<Label> labels = new ArrayList<>();
+            while(rs.next())
+            {
+                Label l = new Label();
+                l.setId(rs.getLong(1));
+                l.setName(rs.getString(2));
+                l.setColor_r(rs.getInt(3));
+                l.setColor_g(rs.getInt(4));
+                l.setColor_b(rs.getInt(5));
+                l.setCalendar_id(rs.getLong(6));
+                labels.add(l);
+            }
+            return labels;
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
