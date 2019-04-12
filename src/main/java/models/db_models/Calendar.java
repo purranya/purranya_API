@@ -14,13 +14,6 @@ public class Calendar
     {
     }
 
-    public Calendar(Long id, String name, String comment)
-    {
-        this.id = id;
-        this.name = name;
-        this.comment = comment;
-    }
-
     public Calendar(Long id, String name, String comment, Long user_id)
     {
         this.id = id;
@@ -80,7 +73,11 @@ public class Calendar
                 length(comment, 0, 255));
     }
 
+    public boolean isUserIdValid() {
+        return (user_id > 0);
+    }
+
     public boolean isValid() {
-        return(isNameValid() && isCommentValid());
+        return(isNameValid() && isCommentValid() && isUserIdValid());
     }
 }
