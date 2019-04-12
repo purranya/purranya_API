@@ -87,11 +87,11 @@ public class Event
     }
 
     public boolean isNameValid() {
-        return (name(name) && length(name, 1, 50) && name != null);
+        return (name != null && name(name) && length(name, 1, 50));
     }
 
     public boolean isCommentValid() {
-        return (length(comment, 1, 255) && comment != null);
+        return  (comment != null && length(comment, 1, 255));
     }
 
     public boolean isStartDateValid() {
@@ -103,11 +103,11 @@ public class Event
     }
 
     public boolean isLabelIdValid() {
-        return (label_id > 0 && label_id != null);
+        return (label_id != null && label_id > 0);
     }
 
     public boolean isCalendarIdValid() {
-        return (calendar_id > 0 && calendar_id != null);
+        return (calendar_id != null && calendar_id > 0 );
     }
 
     public boolean isValid() {
