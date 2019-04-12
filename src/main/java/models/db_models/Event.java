@@ -19,15 +19,15 @@ public class Event
 
     public Event(){}
 
-    public Event(Long id, String name, String comment, DateTime startDate, DateTime endDate, Long label, Long calendar)
+    public Event(Long id, String name, String comment, DateTime startDate, DateTime endDate, Long label_id, Long calendar_id)
     {
         this.id = id;
         this.name = name;
         this.comment = comment;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.label_id = label;
-        this.calendar_id = calendar;
+        this.label_id = label_id;
+        this.calendar_id = calendar_id;
     }
 
     public Long getId() {
