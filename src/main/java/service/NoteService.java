@@ -4,99 +4,131 @@ import app.DBInfo;
 import models.db_models.Note;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class NoteService {
     private Connection connection;
     private ResultSet resultSet;
 
-    private final String CREATE_TABLE_SQL = "CREATE TABLE Note (\n" +
-            "    \"id\" bigserial PRIMARY KEY,\n" +
-            "    \"name\" varchar(50) CHECK(length(\"name\")>1 and length(\"name\")<51) NOT NULL,\n" +
-            "    \"comment\" varchar(2048) CHECK(length(\"comment\")>0 and length(\"comment\")<2049),\n" +
-            "    \"appuser_id\" bigint NOT NULL REFERENCES Appuser(\"id\")\n" +
-            ");";
-    private final String SELECT_SQL = "SELECT \"id\", \"name\", \"comment\", \"appuser_id\" FROM Note WHERE \"name\" = ? and \"comment\" = ? and \"appuser_id\" = ? LIMIT 1";
-    private final String ADD_SQL = "INSERT INTO Note(\"name\", \"comment\", \"appuser_id\") VALUES (?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE Note SET \"name\" = ?, \"comment\" = ? WHERE \"id\" = ?";
-    private final String DELETE_SQL = "DELETE FROM Note WHERE \"id\" = ?";
+    private final String SQL_SELECT_BY_ID = "SELECT \"id\", \"name\", \"comment\", \"appuser_id\" FROM Note WHERE \"id\" = ? LIMIT 1";
+    private final String SQL_SELECT_USER_ID = "SELECT \"id\", \"name\", \"comment\", \"appuser_id\" FROM Note WHERE \"appuser_id\" = ?";
+    private final String SQL_ADD = "INSERT INTO Note(\"name\", \"comment\", \"appuser_id\") VALUES (?, ?, ?)";
+    private final String SQL_UPDATE = "UPDATE Note SET \"name\" = ?, \"comment\" = ?, \"appuser_id\" = ? WHERE \"id\" = ?";
+    private final String SQL_DELETE = "DELETE FROM Note WHERE \"id\" = ?";
 
-    private PreparedStatement CREATE_TABLE_PSTM = null;
-    private PreparedStatement SELECT_PSTM = null;
+    private PreparedStatement SELECT_BY_ID_PSTM = null;
+    private PreparedStatement SELECT_BY_USER_PSTM = null;
     private PreparedStatement ADD_PSTM = null;
     private PreparedStatement UPDATE_PSTM = null;
     private PreparedStatement DELETE_PSTM = null;
 
     public NoteService() throws SQLException {
         DBInfo dbInfo = new DBInfo();
-        boolean tableExists = false;
 
-        connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
-        resultSet = connection.getMetaData().getTables(null, null, null, null);
-        while(resultSet.next())
-            if("Note".equalsIgnoreCase(resultSet.getString("table_name"))) {
-                tableExists = true;
-                break;
+        try
+        {
+            connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public Note getById(Long id) {
+        try {
+            if (SELECT_BY_ID_PSTM == null)
+                SELECT_BY_ID_PSTM = connection.prepareStatement(SQL_SELECT_BY_ID);
+
+            SELECT_BY_ID_PSTM.setLong(1,id);
+            ResultSet rs = SELECT_BY_ID_PSTM.executeQuery();
+
+            if(rs.next())
+            {
+                Note n = new Note();
+                n.setId(rs.getLong(1));
+                n.setName(rs.getString(2));
+                n.setComment(rs.getString(3));
+                n.setUser_id(rs.getLong(4));
+                return n;
             }
-        if(!tableExists) {
-            CREATE_TABLE_PSTM = connection.prepareStatement(CREATE_TABLE_SQL);
-            CREATE_TABLE_PSTM.executeUpdate();
+            else
+                return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
     public boolean add(Note note) {
         try {
-            ADD_PSTM = connection.prepareStatement(ADD_SQL);
+            if(ADD_PSTM==null)
+                ADD_PSTM = connection.prepareStatement(SQL_ADD);
 
             ADD_PSTM.setString(1, note.getName());
             ADD_PSTM.setString(2, note.getComment());
             ADD_PSTM.setLong(3, note.getUser_id());
-            ADD_PSTM.executeUpdate();
-            return true;
+            int added = ADD_PSTM.executeUpdate();
+            return added>0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean select(Note note) {
+    public boolean update(Note note) {
         try {
-            SELECT_PSTM = connection.prepareStatement(SELECT_SQL);
+            if(UPDATE_PSTM==null)
+                UPDATE_PSTM = connection.prepareStatement(SQL_UPDATE);
 
-            SELECT_PSTM.setString(1, note.getName());
-            SELECT_PSTM.setString(2, note.getComment());
-            SELECT_PSTM.setLong(3, note.getUser_id());
-            SELECT_PSTM.executeUpdate();
-            return true;
+            UPDATE_PSTM.setString(1, note.getName());
+            UPDATE_PSTM.setString(2, note.getComment());
+            UPDATE_PSTM.setLong(3, note.getUser_id());
+            UPDATE_PSTM.setLong(4,note.getId());
+            int updated = UPDATE_PSTM.executeUpdate();
+            return updated>0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean update(Note note, String newName, String newComment) {
+    public boolean delete(Long id) {
         try {
-            UPDATE_PSTM = connection.prepareStatement(UPDATE_SQL);
+            if(DELETE_PSTM==null)
+                DELETE_PSTM = connection.prepareStatement(SQL_DELETE);
 
-            UPDATE_PSTM.setString(1, newName);
-            UPDATE_PSTM.setString(2, newComment);
-            UPDATE_PSTM.setLong(3, note.getId());
-            UPDATE_PSTM.executeUpdate();
-            return true;
+            DELETE_PSTM.setLong(1, id);
+            int deleted = DELETE_PSTM.executeUpdate();
+            return deleted>0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean delete(Note note) {
+    public ArrayList<Note> getByUser(Long id)
+    {
         try {
-            DELETE_PSTM = connection.prepareStatement(DELETE_SQL);
+            if (SELECT_BY_USER_PSTM == null)
+                SELECT_BY_USER_PSTM = connection.prepareStatement(SQL_SELECT_USER_ID);
 
-            DELETE_PSTM.setLong(1, note.getId());
-            return true;
+            SELECT_BY_USER_PSTM.setLong(1,id);
+            ResultSet rs = SELECT_BY_USER_PSTM.executeQuery();
+            ArrayList<Note> notes = new ArrayList<>();
+
+            while(rs.next())
+            {
+                Note n = new Note();
+                n.setId(rs.getLong(1));
+                n.setName(rs.getString(2));
+                n.setComment(rs.getString(3));
+                n.setUser_id(rs.getLong(4));
+                notes.add(n);
+            }
+            return notes;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 }
