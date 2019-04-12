@@ -2,6 +2,9 @@ package models.db_models;
 
 import org.joda.time.DateTime;
 
+import static utils.ValidationUtils.length;
+import static utils.ValidationUtils.name;
+
 public class Event
 {
     private Long id;
@@ -81,5 +84,38 @@ public class Event
 
     public void setCalendar_id(Long calendar_id) {
         this.calendar_id = calendar_id;
+    }
+
+    public boolean isNameValid() {
+        return (name(name) && length(name, 1, 50) && name != null);
+    }
+
+    public boolean isCommentValid() {
+        return (length(comment, 1, 255) && comment != null);
+    }
+
+    public boolean isStartDateValid() {
+        return (startDate.isBefore(endDate) || startDate.isEqual(endDate));
+    }
+
+    public boolean isEndDateValid() {
+        return (endDate.isAfter(startDate) || endDate.isEqual(startDate));
+    }
+
+    public boolean isLabelIdValid() {
+        return (label_id > 0);
+    }
+
+    public boolean isCalendarIdValid() {
+        return (calendar_id > 0);
+    }
+
+    public boolean isValid() {
+        return(isNameValid() &&
+                isCommentValid() &&
+                isStartDateValid() &&
+                isEndDateValid() &&
+                isLabelIdValid() &&
+                isCalendarIdValid());
     }
 }
