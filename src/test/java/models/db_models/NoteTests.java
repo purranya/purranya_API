@@ -20,41 +20,41 @@ public class NoteTests {
 
     @Test
     @DisplayName("Checking if note name is valid and returns true")
-    void isUsernameValidTest() {
+    void isNameValidTest() {
         assertTrue(note.isNameValid());
     }
 
     @Test
     @DisplayName("Checking if note name is valid (name has polish digraphs) and returns true")
-    void isUsernameValid2Test() {
+    void isNameValid2Test() {
         note.setName("ćśżń");
         assertTrue(note.isNameValid());
     }
 
     @Test
     @DisplayName("Checking if note name has proper length and returns false because of invalid length (60)")
-    void isUsernameValid3Test() {
+    void isNameValid3Test() {
         note.setName("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxxxxxxxxxxxxxxxxxxxx");
         assertFalse(note.isNameValid());
     }
 
     @Test
     @DisplayName("Checking if note name has proper length and returns false because of invalid length (0)")
-    void isUsernameValid4Test() {
+    void isNameValid4Test() {
         note.setName("");
         assertFalse(note.isNameValid());
     }
 
     @Test
     @DisplayName("Checking if note name is valid and returns false because of invalid characters")
-    void isUsernameValid5Test() {
+    void isNameValid5Test() {
         note.setName("$@!@#$%");
         assertFalse(note.isNameValid());
     }
 
     @Test
     @DisplayName("Checking if note name is valid and returns false because name is null")
-    void isUsernameValid6Test() {
+    void isNameValid6Test() {
         note.setName(null);
         assertFalse(note.isNameValid());
     }
