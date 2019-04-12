@@ -1,7 +1,6 @@
 package service;
 
 import app.DBInfo;
-import models.db_models.Calendar;
 import models.db_models.Label;
 
 import java.sql.*;

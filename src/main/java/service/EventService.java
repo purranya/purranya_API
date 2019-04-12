@@ -3,12 +3,15 @@ package service;
 import app.DBInfo;
 import models.db_models.Event;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class EventService {
     private Connection connection;
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
     private static String SQL_SELECT_BY_ID = "SELECT \"id\",\"name\",\"comment\",\"start_date\",\"end_date\",\"calendar_id\",\"label_id\" FROM Event WHERE \"id\"=? LIMIT 1";
     private static String SQL_ADD = "INSERT INTO Event(\"id\", \"name\", \"comment\", \"start_date\", \"end_date\", \"calendar_id\", \"label_id\") VALUES (?, ?, ?, ?, ?, ?)";
@@ -49,8 +52,8 @@ public class EventService {
                 e.setId(rs.getLong(1));
                 e.setName(rs.getString(2));
                 e.setComment(rs.getString(3));
-                e.setStartDate(new DateTime(rs.getString(4)));
-                e.setEndDate(new DateTime(rs.getString(5)));
+                e.setStartDate(DateTime.parse(rs.getString(4),dateTimeFormatter));
+                e.setEndDate(DateTime.parse(rs.getString(5),dateTimeFormatter));
                 e.setCalendar_id(rs.getLong(6));
                 e.setLabel_id(rs.getLong(7));
 
@@ -90,8 +93,8 @@ public class EventService {
 
             UPDATE_PSTM.setString(1, event.getName());
             UPDATE_PSTM.setString(2, event.getComment());
-            UPDATE_PSTM.setString(3, event.getStartDate().toString());
-            UPDATE_PSTM.setString(4, event.getEndDate().toString());
+            UPDATE_PSTM.setString(3, event.getStartDate().toString(dateTimeFormatter));
+            UPDATE_PSTM.setString(4, event.getEndDate().toString(dateTimeFormatter));
             UPDATE_PSTM.setLong(5, event.getCalendar_id());
             UPDATE_PSTM.setLong(6, event.getLabel_id());
             UPDATE_PSTM.setLong(7, event.getId());
@@ -132,8 +135,8 @@ public class EventService {
                 e.setId(rs.getLong(1));
                 e.setName(rs.getString(2));
                 e.setComment(rs.getString(3));
-                e.setStartDate(new DateTime(rs.getString(4)));
-                e.setEndDate(new DateTime(rs.getString(5)));
+                e.setStartDate(DateTime.parse(rs.getString(4),dateTimeFormatter));
+                e.setEndDate(DateTime.parse(rs.getString(5),dateTimeFormatter));
                 e.setCalendar_id(rs.getLong(6));
                 e.setLabel_id(rs.getLong(7));
                 events.add(e);
