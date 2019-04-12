@@ -11,13 +11,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CalendarTests {
+    private User user;
     private Calendar calendar;
 
     @BeforeEach
     void setUp() {
+        user = new User(1L, "Nickname",
+                "65d8caf480656c763f8202ce8ff7e41846cac819038e9b5e8f568bf3a7a831c5");
         calendar = new Calendar(1L, "ExampleNameOfCalendar",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt" +
-                        " ut labore et dolore magna aliqua.");
+                        " ut labore et dolore magna aliqua.",
+                1L);
     }
 
     @Test
@@ -93,6 +97,19 @@ public class CalendarTests {
     void isValid2Test() {
         calendar.setName("   ");
         assertFalse(calendar.isValid());
+    }
+
+    @Test
+    @DisplayName("Checking if user ID is valid and returns true")
+    void isUserIdValidTest() {
+        assertTrue(calendar.isUserIdValid());
+    }
+
+    @Test
+    @DisplayName("Checking if user ID is valid and returns false because ID is negative")
+    void isUserIdValid2Test() {
+        calendar.setUser_id(-1L);
+        assertFalse(calendar.isUserIdValid());
     }
 
     @AfterEach
