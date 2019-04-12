@@ -103,11 +103,11 @@ public class Event
     }
 
     public boolean isLabelIdValid() {
-        return (label_id > 0);
+        return (label_id > 0 && label_id != null);
     }
 
     public boolean isCalendarIdValid() {
-        return (calendar_id > 0);
+        return (calendar_id > 0 && calendar_id != null);
     }
 
     public boolean isValid() {
