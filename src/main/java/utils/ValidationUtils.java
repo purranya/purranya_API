@@ -6,6 +6,6 @@ public class ValidationUtils {
     }
 
     public static boolean name(String str) {
-        return str.matches("^[-a-zA-Z0-9_]+$");
+        return str.matches("^[-a-zA-Z0-9_ĄĆĘŁŃÓŚŹŻąćęłńóśźż]+$");
     }
 }
