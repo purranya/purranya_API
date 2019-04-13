@@ -33,17 +33,14 @@ public class UserServiceTests {
     static void containerSetup()
     {
         try {
-            System.err.println("Trying Travis conf...");
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/purranya_test", "postgres", "");
         } catch ( SQLException e)
         {
             try {
                 DBInfoTest dbinfo = new DBInfoTest();
-                System.err.println("Travis conf failed, trying env conf...");
                 connection = DriverManager.getConnection(dbinfo.get("jdbc_conn"), dbinfo.get("db_username"), dbinfo.get("db_password"));
             } catch ( SQLException e2) {
                 e.printStackTrace();
-                System.err.println("Env conf failed, throwing an exception");
                 throw new RuntimeException();
             }
         }
