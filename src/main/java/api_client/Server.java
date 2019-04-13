@@ -1,10 +1,7 @@
 package api_client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.transfer_models.Login;
-import models.transfer_models.LoginStatus;
-import models.transfer_models.Presence;
-import models.transfer_models.RegisterStatus;
+import models.transfer_models.*;
 
 import java.util.HashMap;
 
@@ -102,5 +99,37 @@ public class Server
         }
 
         return rs.equals(RegisterStatus.REGISTER_SUCCESS);
+    }
+    public static UserCalendarIndex getCalendarIndex(String username, String password)
+    {
+        HashMap<String,String> params = new HashMap<>();
+        ObjectMapper om = new ObjectMapper();
+
+        Login l = new Login(username,password);
+
+        String response;
+        try
+        {
+            params.put("json",om.writeValueAsString(l));
+            response = new HTTPSClient().post("https://127.0.0.1:8443//calendar/getindex",params);
+        } catch (Exception e)
+        {
+            System.err.println("Could not connect to server");
+            e.printStackTrace();
+            return null;
+        }
+
+        UserCalendarIndex index = null;
+        try
+        {
+            index = om.readValue(response, UserCalendarIndex.class);
+        } catch ( Exception e )
+        {
+            System.err.println("Server response parsing failed");
+            e.printStackTrace();
+            return null;
+        }
+
+        return index;
     }
 }

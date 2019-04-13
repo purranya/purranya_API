@@ -15,10 +15,10 @@ public class CalendarService {
     private PreparedStatement UPDATE_PSTM = null;
     private PreparedStatement DELETE_PSTM = null;
 
-    private static String SQL_SELECT_BY_ID = "SELECT \"id\",\"name\",\"comment\",\"user_id\" FROM Calendar WHERE \"id\" = ? LIMIT 1";
-    private static String SQL_SELECT_BY_USER = "SELECT \"id\",\"name\",\"comment\",\"user_id\" FROM Calendar WHERE \"user_id\" = ?";
-    private static String SQL_ADD = "INSERT INTO Calendar(\"name\",\"comment\",\"user_id\") VALUES(?,?,?)";
-    private static String SQL_UPDATE = "UPDATE Calendar SET \"name\"=?,\"comment\"=?,\"user_id\"=? WHERE \"id\"=?";
+    private static String SQL_SELECT_BY_ID = "SELECT \"id\",\"name\",\"comment\",\"appuser_id\" FROM Calendar WHERE \"id\" = ? LIMIT 1";
+    private static String SQL_SELECT_BY_USER = "SELECT \"id\",\"name\",\"comment\",\"appuser_id\" FROM Calendar WHERE \"appuser_id\" = ?";
+    private static String SQL_ADD = "INSERT INTO Calendar(\"name\",\"comment\",\"appuser_id\") VALUES(?,?,?)";
+    private static String SQL_UPDATE = "UPDATE Calendar SET \"name\"=?,\"comment\"=?,\"appuser_id\"=? WHERE \"id\"=?";
     private static String SQL_DELETE = "DELETE FROM Calendar WHERE \"id\"=?";
 
     public CalendarService() {
@@ -115,7 +115,7 @@ public class CalendarService {
                 SELECT_BY_USER_PSTM = connection.prepareStatement(SQL_SELECT_BY_USER);
 
             SELECT_BY_USER_PSTM.setLong(1, userId);
-            ResultSet rs = SELECT_BY_ID_PSTM.executeQuery();
+            ResultSet rs = SELECT_BY_USER_PSTM.executeQuery();
             ArrayList<Calendar> calendars = new ArrayList<>();
             while(rs.next())
             {
