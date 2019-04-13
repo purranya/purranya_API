@@ -38,6 +38,10 @@ public class EventService {
         }
     }
 
+    public EventService(Connection connection) {
+        this.connection = connection;
+    }
+
     public Event getById(Long id){
         try {
             if(SELECT_BY_ID_PSTM==null)

@@ -34,6 +34,10 @@ public class NoteService {
         }
     }
 
+    public NoteService(Connection connection) {
+        this.connection = connection;
+    }
+
     public Note getById(Long id) {
         try {
             if (SELECT_BY_ID_PSTM == null)

@@ -33,6 +33,10 @@ public class UserService
         }
     }
 
+    public UserService(Connection connection) {
+        this.connection = connection;
+    }
+
     public boolean add(User user)
     {
         try {

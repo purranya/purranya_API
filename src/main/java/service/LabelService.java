@@ -33,6 +33,10 @@ public class LabelService {
         }
     }
 
+    public LabelService(Connection connection) {
+        this.connection = connection;
+    }
+
     public Label getById(Long id){
         try {
             if(SELECT_BY_ID_PSTM==null)

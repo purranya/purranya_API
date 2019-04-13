@@ -33,6 +33,10 @@ public class CalendarService {
         }
     }
 
+    public CalendarService(Connection connection) {
+        this.connection = connection;
+    }
+
     public Calendar getById(Long id) {
         try {
             if(SELECT_BY_ID_PSTM==null)
