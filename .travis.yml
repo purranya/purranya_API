@@ -1,5 +1,5 @@
 language: java
 jdk:
   - openjdk8
-servlets:
-  - docker
+before_script:
+  - psql -c 'create database purranya_test;' -U postgres
