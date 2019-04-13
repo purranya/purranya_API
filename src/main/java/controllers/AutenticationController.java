@@ -8,7 +8,7 @@ import models.transfer_models.LoginStatus;
 import models.transfer_models.RegisterStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import service.UserService;
+import services.UserService;
 
 @Component
 @RestController

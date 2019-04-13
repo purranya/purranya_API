@@ -1,4 +1,4 @@
-package service;
+package services;
 
 import app.DBInfo;
 import models.db_models.Label;
