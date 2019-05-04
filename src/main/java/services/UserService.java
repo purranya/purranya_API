@@ -2,6 +2,7 @@ package services;
 
 import app.DBInfo;
 import models.db_models.User;
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 
@@ -37,20 +38,21 @@ public class UserService
         this.connection = connection;
     }
 
-    public boolean add(User user)
-    {
-        try {
-            if(ADD_PSTM ==null)
-                ADD_PSTM =connection.prepareStatement(SQL_ADD);
+    public boolean add(User user) {
+        if (user == null)
+            return false;
 
-            ADD_PSTM.setString(1,user.getUsername());
-            ADD_PSTM.setString(2,user.getPassword_hash());
+        try {
+            if (ADD_PSTM == null)
+                ADD_PSTM = connection.prepareStatement(SQL_ADD);
+
+            ADD_PSTM.setString(1, user.getUsername());
+            ADD_PSTM.setString(2, user.getPassword_hash());
 
             int added = ADD_PSTM.executeUpdate();
-            return added>0;
+            return added > 0;
 
-        } catch ( Exception e )
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -107,6 +109,9 @@ public class UserService
 
     public boolean update(User user)
     {
+        if(user == null)
+            return false;
+
         try {
             if(UPDATE_PSTM ==null)
                 UPDATE_PSTM =connection.prepareStatement(SQL_UPDATE);
