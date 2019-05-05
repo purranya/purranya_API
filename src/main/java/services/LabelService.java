@@ -38,6 +38,9 @@ public class LabelService {
     }
 
     public Label getById(Long id){
+        if(id == null)
+            return null;
+
         try {
             if(SELECT_BY_ID_PSTM==null)
                 SELECT_BY_ID_PSTM = connection.prepareStatement(SQL_SELECT_BY_ID);
@@ -65,6 +68,9 @@ public class LabelService {
     }
 
     public boolean add(Label label) {
+        if(label ==  null)
+            return false;
+
         try {
             if(ADD_PSTM==null)
             ADD_PSTM = connection.prepareStatement(SQL_ADD);
@@ -117,6 +123,9 @@ public class LabelService {
 
     public ArrayList<Label> getByCalendar(Long id)
     {
+        if(id == null)
+            return null;
+
         try {
             if(SELECT_BY_CALENDAR_PSTM==null)
                 SELECT_BY_CALENDAR_PSTM = connection.prepareStatement(SQL_SELECT_BY_CALENDAR);
