@@ -22,7 +22,7 @@ public class NoteService {
     private PreparedStatement UPDATE_PSTM = null;
     private PreparedStatement DELETE_PSTM = null;
 
-    public NoteService() throws SQLException {
+    public NoteService() {
         DBInfo dbInfo = new DBInfo();
 
         try
@@ -39,6 +39,9 @@ public class NoteService {
     }
 
     public Note getById(Long id) {
+        if(id == null)
+            return null;
+
         try {
             if (SELECT_BY_ID_PSTM == null)
                 SELECT_BY_ID_PSTM = connection.prepareStatement(SQL_SELECT_BY_ID);
@@ -64,6 +67,9 @@ public class NoteService {
     }
 
     public boolean add(Note note) {
+        if(note == null)
+            return false;
+
         try {
             if(ADD_PSTM==null)
                 ADD_PSTM = connection.prepareStatement(SQL_ADD);
@@ -80,6 +86,9 @@ public class NoteService {
     }
 
     public boolean update(Note note) {
+        if(note == null)
+            return false;
+
         try {
             if(UPDATE_PSTM==null)
                 UPDATE_PSTM = connection.prepareStatement(SQL_UPDATE);
@@ -97,6 +106,9 @@ public class NoteService {
     }
 
     public boolean delete(Long id) {
+        if(id == null)
+            return false;
+
         try {
             if(DELETE_PSTM==null)
                 DELETE_PSTM = connection.prepareStatement(SQL_DELETE);
@@ -112,6 +124,9 @@ public class NoteService {
 
     public ArrayList<Note> getByUser(Long id)
     {
+        if(id == null)
+            return null;
+
         try {
             if (SELECT_BY_USER_PSTM == null)
                 SELECT_BY_USER_PSTM = connection.prepareStatement(SQL_SELECT_USER_ID);
