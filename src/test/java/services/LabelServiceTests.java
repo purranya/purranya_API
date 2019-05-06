@@ -149,67 +149,71 @@ public class LabelServiceTests {
     void getByCalendarReturnsEmptyListWhenCalendarIsNull() {
         assertNull(labelService.getByCalendar(null));
     }
-/*
+
     @Test
     void validGetById() {
-        userService.add(label);
+        labelService.add(label);
 
-        User result = userService.getById(label.getId());
+        Label result = labelService.getById(label.getId());
 
         assertAll(
-                () -> assertEquals(label.getId(), result.getId()),
-                () -> assertEquals(label.getUsername(), result.getUsername()),
-                () -> assertEquals(label.getPassword_hash(), result.getPassword_hash())
+                () -> assertEquals(label.getCalendar_id(), result.getCalendar_id()),
+                () -> assertEquals(label.getName(), result.getName()),
+                () -> assertEquals(label.getColor_r(), result.getColor_r()),
+                () -> assertEquals(label.getColor_g(), result.getColor_g()),
+                () -> assertEquals(label.getColor_b(), result.getColor_b())
         );
     }
 
     @Test
-    void getByIdReturnsNullWhenUserIsNotFound() {
-        assertNull(userService.getById(label.getId()));
+    void getByIdReturnsNullWhenLabelIsNotFound() {
+        assertNull(labelService.getById(label.getId()));
     }
 
     @Test
-    void getReturnsNullWhenIdIsNull() {
-        assertNull(userService.getById(null));
+    void getByIdReturnsNullWhenIdIsNull() {
+        assertNull(labelService.getById(null));
     }
 
     @Test
     void validUpdate() {
-        userService.add(label);
+        labelService.add(label);
 
-        label.setUsername("newUsername");
-        assertTrue(userService.update(label));
+        label.setName("New name");
+        assertTrue(labelService.update(label));
     }
 
     @Test
-    void updateReturnsFalseWhenUserIsNull() {
-        assertFalse(userService.update(null));
+    void updateReturnsFalseWhenLabelIsNull() {
+        assertFalse(labelService.update(null));
     }
 
     @Test
-    void updateReturnsFalseWhenUserIsNotFound() {
-        assertFalse(userService.update(label));
+    void updateReturnsFalseWhenLabelIsNotFound() {
+        assertFalse(labelService.update(label));
     }
 
     @Test
     void validDelete() {
         assertAll(
-                () -> assertTrue(userService.add(label)),
-                () -> assertEquals(label.getId(), userService.getById(label.getId()).getId()),
-                () -> assertEquals(label.getUsername(), userService.getById(label.getId()).getUsername()),
-                () -> assertEquals(label.getPassword_hash(), userService.getById(label.getId()).getPassword_hash()),
-                () -> assertTrue(userService.delete(label.getId())),
-                () -> assertNull(userService.getById(label.getId()))
+                () -> assertTrue(labelService.add(label)),
+                () -> assertEquals(label.getCalendar_id(), result.getCalendar_id()),
+                () -> assertEquals(label.getName(), result.getName()),
+                () -> assertEquals(label.getColor_r(), result.getColor_r()),
+                () -> assertEquals(label.getColor_g(), result.getColor_g()),
+                () -> assertEquals(label.getColor_b(), result.getColor_b()),
+                () -> assertTrue(labelService.delete(label.getId())),
+                () -> assertNull(labelService.getById(label.getId()))
         );
     }
 
     @Test
-    void deleteReturnsFalseWhenUserIsNotFound() {
-        assertFalse(userService.delete(label.getId()));
+    void deleteReturnsFalseWhenLabelIsNotFound() {
+        assertFalse(labelService.delete(label.getId()));
     }
 
     @Test
     void deleteReturnsFalseWhenIdIsNull() {
-        assertFalse(userService.delete(null));
-    }*/
+        assertFalse(labelService.delete(null));
+    }
 }
