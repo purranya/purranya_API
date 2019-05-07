@@ -140,7 +140,9 @@ public class EventServiceTests {
     }
 
     @Test
-    void addReturnsFalseWhenEventDoesNotExistInDatabase() {
+    void addReturnsFalseWhenEventExistsInDatabase() {
+        eventService.add(event);
+
         assertFalse(eventService.add(event));
     }
 

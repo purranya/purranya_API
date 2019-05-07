@@ -18,7 +18,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** TODO skończyć testy! */
 public class LabelServiceTests {
 
     static Connection connection;
@@ -120,6 +119,8 @@ public class LabelServiceTests {
 
     @Test
     void addReturnsFalseWhenLabelExistsInDatabase() {
+        labelService.add(label);
+
         assertFalse(labelService.add(label));
     }
 
@@ -141,12 +142,12 @@ public class LabelServiceTests {
     }
 
     @Test
-    void getByCalendarReturnsEmptyListWhenCalendarIsNotFound() {
+    void getByCalendarReturnsEmptyListWhenLabelIsNotFound() {
         assertEquals(new ArrayList<Label>(), labelService.getByCalendar(calendar.getId()));
     }
 
     @Test
-    void getByCalendarReturnsEmptyListWhenCalendarIsNull() {
+    void getByCalendarReturnsEmptyListWhenCalendarIdIsNull() {
         assertNull(labelService.getByCalendar(null));
     }
 

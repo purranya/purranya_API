@@ -134,7 +134,7 @@ public class UserServiceTests {
     }
 
     @Test
-    void getReturnsNullWhenIdIsNull() {
+    void getByIdReturnsNullWhenIdIsNull() {
         assertNull(userService.getById(null));
     }
 

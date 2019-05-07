@@ -141,7 +141,7 @@ public class NoteServiceTests {
     }
 
     @Test
-    void getByIdReturnsNullWhenUserIsNotFound() {
+    void getByIdReturnsNullWhenNoteIsNotFound() {
         assertNull(noteService.getById(note.getId()));
     }
 
@@ -160,12 +160,12 @@ public class NoteServiceTests {
     }
 
     @Test
-    void updateReturnsFalseWhenUserIsNull() {
+    void updateReturnsFalseWhenNoteIsNull() {
         assertFalse(noteService.update(null));
     }
 
     @Test
-    void updateReturnsFalseWhenUserIsNotFound() {
+    void updateReturnsFalseWhenNoteIsNotFound() {
         assertFalse(noteService.update(note));
     }
 
@@ -182,7 +182,7 @@ public class NoteServiceTests {
     }
 
     @Test
-    void deleteReturnsFalseWhenUserIsNotFound() {
+    void deleteReturnsFalseWhenNoteIsNotFound() {
         assertFalse(noteService.delete(note.getId()));
     }
 
