@@ -111,6 +111,9 @@ public class LabelService {
     }
 
     public boolean delete(Long id) {
+        if(id == null)
+            return false;
+
         try {
             if(DELETE_PSTM==null)
                 DELETE_PSTM = connection.prepareStatement(SQL_DELETE);
