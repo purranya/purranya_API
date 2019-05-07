@@ -14,8 +14,8 @@ public class EventService {
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
     private static String SQL_SELECT_BY_ID = "SELECT \"id\",\"name\",\"comment\",\"start_date\",\"end_date\",\"calendar_id\",\"label_id\" FROM Event WHERE \"id\"=? LIMIT 1";
-    private static String SQL_ADD = "INSERT INTO Event(\"id\", \"name\", \"comment\", \"start_date\", \"end_date\", \"calendar_id\", \"label_id\") VALUES (?, ?, ?, ?, ?, ?)";
-    private static String SQL_UPDATE = "UPDATE Event SET \"name\" = ? AND \"comment\" = ? AND \"start_date\" = ? AND \"end_date\" = ? AND \"calendar_id\" = ? AND \"label_id\" = ? WHERE \"id\" = ?";
+    private static String SQL_ADD = "INSERT INTO Event(\"id\", \"name\", \"comment\", \"start_date\", \"end_date\", \"calendar_id\", \"label_id\") VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static String SQL_UPDATE = "UPDATE Event SET \"name\" = ?, \"comment\" = ?, \"start_date\" = ?, \"end_date\" = ?, \"calendar_id\" = ?, \"label_id\" = ? WHERE \"id\" = ?";
     private static String SQL_DELETE = "DELETE FROM Event WHERE \"id\" = ?";
     private static String SQL_SELECT_BY_CALENDAR = "SELECT \"id\",\"name\",\"comment\",\"start_date\",\"end_date\",\"calendar_id\",\"label_id\" FROM Event WHERE \"calendar_id\"=?";
 
@@ -28,7 +28,6 @@ public class EventService {
     public EventService() throws SQLException {
         DBInfo dbInfo = new DBInfo();
 
-        connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
         try
         {
             connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
@@ -43,6 +42,9 @@ public class EventService {
     }
 
     public Event getById(Long id){
+        if(id == null)
+            return null;
+
         try {
             if(SELECT_BY_ID_PSTM==null)
                 SELECT_BY_ID_PSTM = connection.prepareStatement(SQL_SELECT_BY_ID);
@@ -72,16 +74,20 @@ public class EventService {
     }
 
     public boolean add(Event event) {
+        if(event == null)
+            return false;
+
         try {
             if(ADD_PSTM==null)
                 ADD_PSTM = connection.prepareStatement(SQL_ADD);
 
-            ADD_PSTM.setString(1, event.getName());
-            ADD_PSTM.setString(2, event.getComment());
-            ADD_PSTM.setString(3, event.getStartDate().toString());
-            ADD_PSTM.setString(4, event.getEndDate().toString());
-            ADD_PSTM.setLong(5, event.getCalendar_id());
-            ADD_PSTM.setLong(6, event.getLabel_id());
+            ADD_PSTM.setLong(1, event.getId());
+            ADD_PSTM.setString(2, event.getName());
+            ADD_PSTM.setString(3, event.getComment());
+            ADD_PSTM.setTimestamp(4, new Timestamp(event.getStartDate().getMillis()));
+            ADD_PSTM.setTimestamp(5, new Timestamp(event.getEndDate().getMillis()));
+            ADD_PSTM.setLong(6, event.getCalendar_id());
+            ADD_PSTM.setLong(7, event.getLabel_id());
             int added = ADD_PSTM.executeUpdate();
             return added>0;
         } catch(SQLException e) {
@@ -91,14 +97,17 @@ public class EventService {
     }
 
     public boolean update(Event event) {
+        if(event == null)
+            return false;
+
         try {
             if(UPDATE_PSTM==null)
                 UPDATE_PSTM = connection.prepareStatement(SQL_UPDATE);
 
             UPDATE_PSTM.setString(1, event.getName());
             UPDATE_PSTM.setString(2, event.getComment());
-            UPDATE_PSTM.setString(3, event.getStartDate().toString(dateTimeFormatter));
-            UPDATE_PSTM.setString(4, event.getEndDate().toString(dateTimeFormatter));
+            UPDATE_PSTM.setTimestamp(3, new Timestamp(event.getStartDate().getMillis()));
+            UPDATE_PSTM.setTimestamp(4, new Timestamp(event.getEndDate().getMillis()));
             UPDATE_PSTM.setLong(5, event.getCalendar_id());
             UPDATE_PSTM.setLong(6, event.getLabel_id());
             UPDATE_PSTM.setLong(7, event.getId());
@@ -111,12 +120,15 @@ public class EventService {
     }
 
     public boolean delete(Long id) {
+        if(id == null)
+            return false;
+
         try {
             if(DELETE_PSTM==null)
                 DELETE_PSTM = connection.prepareStatement(SQL_DELETE);
 
             DELETE_PSTM.setLong(1, id);
-            int deleted = UPDATE_PSTM.executeUpdate();
+            int deleted = DELETE_PSTM.executeUpdate();
             return deleted>0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -126,12 +138,15 @@ public class EventService {
 
     public ArrayList<Event> getByCalendar(Long id)
     {
+        if(id == null)
+            return null;
+
         try {
             if(SELECT_BY_CALENDAR_PSTM==null)
                 SELECT_BY_CALENDAR_PSTM = connection.prepareStatement(SQL_SELECT_BY_CALENDAR);
 
             SELECT_BY_CALENDAR_PSTM.setLong(1, id);
-            ResultSet rs = SELECT_BY_ID_PSTM.executeQuery();
+            ResultSet rs = SELECT_BY_CALENDAR_PSTM.executeQuery();
             ArrayList<Event> events = new ArrayList<>();
             while(rs.next())
             {
