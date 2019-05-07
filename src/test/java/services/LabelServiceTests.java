@@ -152,6 +152,8 @@ public class LabelServiceTests {
 
     @Test
     void validGetById() {
+        userService.add(user);
+        calendarService.add(calendar);
         labelService.add(label);
 
         Label result = labelService.getById(label.getId());
@@ -177,6 +179,8 @@ public class LabelServiceTests {
 
     @Test
     void validUpdate() {
+        userService.add(user);
+        calendarService.add(calendar);
         labelService.add(label);
 
         label.setName("New name");
@@ -196,12 +200,14 @@ public class LabelServiceTests {
     @Test
     void validDelete() {
         assertAll(
+                () -> assertTrue(userService.add(user)),
+                () -> assertTrue(calendarService.add(calendar)),
                 () -> assertTrue(labelService.add(label)),
-                () -> assertEquals(label.getCalendar_id(), result.getCalendar_id()),
-                () -> assertEquals(label.getName(), result.getName()),
-                () -> assertEquals(label.getColor_r(), result.getColor_r()),
-                () -> assertEquals(label.getColor_g(), result.getColor_g()),
-                () -> assertEquals(label.getColor_b(), result.getColor_b()),
+                () -> assertEquals(label.getCalendar_id(), labelService.getById(label.getId()).getCalendar_id()),
+                () -> assertEquals(label.getName(), labelService.getById(label.getId()).getName()),
+                () -> assertEquals(label.getColor_r(), labelService.getById(label.getId()).getColor_r()),
+                () -> assertEquals(label.getColor_g(), labelService.getById(label.getId()).getColor_g()),
+                () -> assertEquals(label.getColor_b(), labelService.getById(label.getId()).getColor_b()),
                 () -> assertTrue(labelService.delete(label.getId())),
                 () -> assertNull(labelService.getById(label.getId()))
         );

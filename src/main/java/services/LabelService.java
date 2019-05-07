@@ -89,6 +89,9 @@ public class LabelService {
     }
 
     public boolean update(Label label) {
+        if(label == null)
+            return false;
+
         try {
             if(UPDATE_PSTM==null)
                 UPDATE_PSTM = connection.prepareStatement(SQL_UPDATE);
