@@ -1,11 +1,10 @@
 package controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.db_models.Calendar;
 import models.db_models.User;
 import models.transfer_models.AddCalendar;
-import models.transfer_models.INSERT_STATUS;
+import models.status_models.INSERT_STATUS;
 import models.transfer_models.Login;
 import models.transfer_models.UserCalendarIndex;
 import org.springframework.stereotype.Component;

@@ -2,6 +2,9 @@ package api_client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.db_models.Calendar;
+import models.status_models.INSERT_STATUS;
+import models.status_models.LOGIN_STATUS;
+import models.status_models.REGISTRE_STATUS;
 import models.transfer_models.*;
 
 import java.util.HashMap;
@@ -55,10 +58,10 @@ public class Server
             return false;
         }
 
-        LoginStatus ls = null;
+        LOGIN_STATUS ls = null;
         try
         {
-            ls = om.readValue(response, LoginStatus.class);
+            ls = om.readValue(response, LOGIN_STATUS.class);
         } catch ( Exception e )
         {
             System.err.println("Server response parsing failed");
@@ -66,7 +69,7 @@ public class Server
             return false;
         }
 
-        return ls.equals(LoginStatus.LOGIN_SUCCESS);
+        return ls.equals(LOGIN_STATUS.LOGIN_SUCCESS);
     }
 
     public static boolean register(String username, String password)
@@ -88,10 +91,10 @@ public class Server
             return false;
         }
 
-        RegisterStatus rs = null;
+        REGISTRE_STATUS rs = null;
         try
         {
-            rs = om.readValue(response, RegisterStatus.class);
+            rs = om.readValue(response, REGISTRE_STATUS.class);
         } catch ( Exception e )
         {
             System.err.println("Server response parsing failed");
@@ -99,7 +102,7 @@ public class Server
             return false;
         }
 
-        return rs.equals(RegisterStatus.REGISTER_SUCCESS);
+        return rs.equals(REGISTRE_STATUS.REGISTER_SUCCESS);
     }
 
     public static UserCalendarIndex getCalendarIndex(String username, String password)

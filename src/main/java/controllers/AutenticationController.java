@@ -4,8 +4,8 @@ import utils.PasswordUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.db_models.User;
 import models.transfer_models.Login;
-import models.transfer_models.LoginStatus;
-import models.transfer_models.RegisterStatus;
+import models.status_models.LOGIN_STATUS;
+import models.status_models.REGISTRE_STATUS;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import services.UserService;
@@ -37,9 +37,9 @@ public class AutenticationController
         try
         {
             if (u != null)
-                return om.writeValueAsString(LoginStatus.LOGIN_SUCCESS);
+                return om.writeValueAsString(LOGIN_STATUS.LOGIN_SUCCESS);
             else
-                return om.writeValueAsString(LoginStatus.LOGIN_FAILED);
+                return om.writeValueAsString(LOGIN_STATUS.LOGIN_FAILED);
         } catch ( Exception e )
         {
             e.printStackTrace();
@@ -69,14 +69,14 @@ public class AutenticationController
         {
             boolean added = userService.add(u);
             if(added)
-                return om.writeValueAsString(RegisterStatus.REGISTER_SUCCESS);
+                return om.writeValueAsString(REGISTRE_STATUS.REGISTER_SUCCESS);
             else
-                return om.writeValueAsString(RegisterStatus.REGISTER_FAILED);
+                return om.writeValueAsString(REGISTRE_STATUS.REGISTER_FAILED);
         } catch ( Exception e )
         {
             try
             {
-                return om.writeValueAsString(RegisterStatus.REGISTER_FAILED);
+                return om.writeValueAsString(REGISTRE_STATUS.REGISTER_FAILED);
             } catch ( Exception e2 )
             {
                 e.printStackTrace();

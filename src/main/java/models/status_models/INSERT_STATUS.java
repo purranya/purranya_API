@@ -1,4 +1,4 @@
-package models.transfer_models;
+package models.status_models;
 
 public enum INSERT_STATUS
 {
