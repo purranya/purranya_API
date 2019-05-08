@@ -1,11 +1,10 @@
 package api_client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.transfer_models.Login;
-import models.transfer_models.LoginStatus;
-import models.transfer_models.Presence;
-import models.transfer_models.RegisterStatus;
+import models.db_models.Calendar;
+import models.transfer_models.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Server
@@ -102,5 +101,75 @@ public class Server
         }
 
         return rs.equals(RegisterStatus.REGISTER_SUCCESS);
+    }
+
+    public static UserCalendarIndex getCalendarIndex(String username, String password)
+    {
+        HashMap<String,String> params = new HashMap<>();
+        ObjectMapper om = new ObjectMapper();
+
+        Login l = new Login(username,password);
+
+        String response = null;
+        try
+        {
+            params.put("json",om.writeValueAsString(l));
+            response = new HTTPSClient().post("https://127.0.0.1:8443//calendar/getindex",params);
+        } catch (Exception e)
+        {
+            System.err.println("Could not connect to server");
+            e.printStackTrace();
+            return null;
+        }
+
+        UserCalendarIndex index = null;
+
+        try
+        {
+            index = om.readValue(response, UserCalendarIndex.class);
+        } catch ( Exception e )
+        {
+            System.err.println("Server response parsing failed");
+            e.printStackTrace();
+            return null;
+        }
+
+        return index;
+    }
+
+    public static boolean addCalendar(String username, String password, Calendar calendar)
+    {
+        HashMap<String,String> params = new HashMap<>();
+        ObjectMapper om = new ObjectMapper();
+
+        Login l = new Login(username,password);
+
+        AddCalendar ac = new AddCalendar(l,calendar);
+
+        String response = null;
+        try
+        {
+            params.put("json",om.writeValueAsString(ac));
+            response = new HTTPSClient().post("https://127.0.0.1:8443//calendar/add",params);
+        } catch (Exception e)
+        {
+            System.err.println("Could not connect to server");
+            e.printStackTrace();
+            return false;
+        }
+
+        INSERT_STATUS answer = null;
+
+        try
+        {
+            answer = om.readValue(response, INSERT_STATUS.class);
+        } catch ( Exception e )
+        {
+            System.err.println("Server response parsing failed");
+            e.printStackTrace();
+            return false;
+        }
+
+        return answer.equals(INSERT_STATUS.INSERT_OK);
     }
 }
