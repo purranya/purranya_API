@@ -2,10 +2,7 @@ package services;
 
 import app.DBInfoTest;
 import models.db_models.User;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.postgresql.util.PSQLException;
 
 import java.io.IOException;
@@ -35,6 +32,7 @@ public class UserServiceTests {
 
     @BeforeAll
     static void containerSetup() {
+        ServiceOptions.serviceExceptionLogging=false;
         try {
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/purranya_test", "postgres", "");
         } catch (SQLException e) {
@@ -46,6 +44,12 @@ public class UserServiceTests {
                 throw new RuntimeException();
             }
         }
+    }
+
+    @AfterAll
+    static void restoreServiceLogging()
+    {
+        ServiceOptions.serviceExceptionLogging=true;
     }
 
     @BeforeEach

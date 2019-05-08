@@ -6,10 +6,7 @@ import models.db_models.Event;
 import models.db_models.Label;
 import models.db_models.User;
 import org.joda.time.DateTime;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -67,6 +64,7 @@ public class EventServiceTests {
 
     @BeforeAll
     static void containerSetup() {
+        ServiceOptions.serviceExceptionLogging=false;
         try {
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/purranya_test", "postgres", "");
         } catch (SQLException e) {
@@ -78,6 +76,12 @@ public class EventServiceTests {
                 throw new RuntimeException();
             }
         }
+    }
+
+    @AfterAll
+    static void restoreServiceLogging()
+    {
+        ServiceOptions.serviceExceptionLogging=true;
     }
 
     @BeforeEach
