@@ -1,6 +1,6 @@
 package controllers;
 
-import Utils.PasswordUtils;
+import utils.PasswordUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.db_models.User;
 import models.transfer_models.Login;
@@ -8,7 +8,7 @@ import models.transfer_models.LoginStatus;
 import models.transfer_models.RegisterStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import service.UserService;
+import services.UserService;
 
 @Component
 @RestController
@@ -32,7 +32,7 @@ public class AutenticationController
             e.printStackTrace();
         }
 
-        User u = userService.getUser(l.getUsername(), PasswordUtils.sha256(l.getPassword()));
+        User u = userService.getByLogin(l.getUsername(), PasswordUtils.sha256(l.getPassword()));
 
         try
         {
@@ -67,7 +67,7 @@ public class AutenticationController
 
         try
         {
-            boolean added = userService.addUser(u);
+            boolean added = userService.add(u);
             if(added)
                 return om.writeValueAsString(RegisterStatus.REGISTER_SUCCESS);
             else

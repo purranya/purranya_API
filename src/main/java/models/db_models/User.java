@@ -1,5 +1,7 @@
 package models.db_models;
 
+import utils.ValidationUtils;
+
 public class User
 {
     private Long id;
@@ -45,6 +47,17 @@ public class User
 
     public boolean isValid()
     {
-        return true;
+        return isUsernameValid() &&
+                isPasswordValid();
+    }
+
+    public boolean isUsernameValid()
+    {
+        return username != null && ValidationUtils.length(username,2,32) && ValidationUtils.name(username);
+    }
+
+    public boolean isPasswordValid()
+    {
+        return password_hash != null && password_hash.length() == 64;
     }
 }

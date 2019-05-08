@@ -1,0 +1,5 @@
+language: java
+jdk:
+  - openjdk8
+before_script:
+  - psql -c 'create database purranya_test;' -U postgres

@@ -2,6 +2,9 @@ package models.db_models;
 
 import org.joda.time.DateTime;
 
+import static utils.ValidationUtils.length;
+import static utils.ValidationUtils.name;
+
 public class Event
 {
     private Long id;
@@ -11,89 +14,108 @@ public class Event
     private DateTime startDate;
     private DateTime endDate;
 
-    private Label label;
-    private Calendar calendar;
+    private Long label_id;
+    private Long calendar_id;
 
     public Event(){}
 
-    public Event(Long id, String name, String comment, DateTime startDate, DateTime endDate, Label label, Calendar calendar)
+    public Event(Long id, String name, String comment, DateTime startDate, DateTime endDate, Long label_id, Long calendar_id)
     {
         this.id = id;
         this.name = name;
         this.comment = comment;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.label = label;
-        this.calendar = calendar;
+        this.label_id = label_id;
+        this.calendar_id = calendar_id;
     }
 
-    public Long getId()
-    {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Long id)
-    {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getComment()
-    {
+    public String getComment() {
         return comment;
     }
 
-    public void setComment(String comment)
-    {
+    public void setComment(String comment) {
         this.comment = comment;
     }
 
-    public DateTime getStartDate()
-    {
+    public DateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(DateTime startDate)
-    {
+    public void setStartDate(DateTime startDate) {
         this.startDate = startDate;
     }
 
-    public DateTime getEndDate()
-    {
+    public DateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(DateTime endDate)
-    {
+    public void setEndDate(DateTime endDate) {
         this.endDate = endDate;
     }
 
-    public Label getLabel()
-    {
-        return label;
+    public Long getLabel_id() {
+        return label_id;
     }
 
-    public void setLabel(Label label)
-    {
-        this.label = label;
+    public void setLabel_id(Long label_id) {
+        this.label_id = label_id;
     }
 
-    public Calendar getCalendar()
-    {
-        return calendar;
+    public Long getCalendar_id() {
+        return calendar_id;
     }
 
-    public void setCalendar(Calendar calendar)
-    {
-        this.calendar = calendar;
+    public void setCalendar_id(Long calendar_id) {
+        this.calendar_id = calendar_id;
+    }
+
+    public boolean isNameValid() {
+        return (name != null && name(name) && length(name, 1, 50));
+    }
+
+    public boolean isCommentValid() {
+        return  (comment != null && length(comment, 1, 255));
+    }
+
+    public boolean isStartDateValid() {
+        return (startDate.isBefore(endDate) || startDate.isEqual(endDate));
+    }
+
+    public boolean isEndDateValid() {
+        return (endDate.isAfter(startDate) || endDate.isEqual(startDate));
+    }
+
+    public boolean isLabelIdValid() {
+        return (label_id != null && label_id > 0);
+    }
+
+    public boolean isCalendarIdValid() {
+        return (calendar_id != null && calendar_id > 0 );
+    }
+
+    public boolean isValid() {
+        return(isNameValid() &&
+                isCommentValid() &&
+                isStartDateValid() &&
+                isEndDateValid() &&
+                isLabelIdValid() &&
+                isCalendarIdValid());
     }
 }

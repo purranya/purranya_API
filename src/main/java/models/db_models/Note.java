@@ -1,5 +1,8 @@
 package models.db_models;
 
+import static utils.ValidationUtils.length;
+import static utils.ValidationUtils.name;
+
 public class Note
 {
     private Long id;
@@ -56,5 +59,28 @@ public class Note
     public void setUser_id(Long user_id)
     {
         this.user_id = user_id;
+    }
+
+    public boolean isValid()
+    {
+        return isNameValid() &&
+                isCommentValid() &&
+                isUserIdValid();
+    }
+
+    public boolean isNameValid() {
+        return (name != null &&
+                length(name, 1, 50) &&
+                name(name));
+    }
+
+    public boolean isCommentValid() {
+        return (comment != null &&
+                length(comment, 0, 255));
+    }
+
+    public boolean isUserIdValid()
+    {
+        return user_id != null && user_id > 0;
     }
 }
