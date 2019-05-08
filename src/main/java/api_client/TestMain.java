@@ -57,7 +57,7 @@ public class TestMain
         if (Server.isPresent())
             if (Server.logIn("kamur", "kamil1234"))
             {
-                System.out.println(Server.addCalendar("kamur", "kamil1234", new Calendar(0L, "Kalendarz2", "xdddd")));
+                System.out.println(Server.addCalendar("kamur", "kamil1234", new Calendar(0L, "Kalendarz2", "xdddd",0L)));
             } else
                 System.out.println("Niezalogowano");
         else
