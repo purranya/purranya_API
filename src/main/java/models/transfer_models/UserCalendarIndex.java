@@ -12,9 +12,8 @@ public class UserCalendarIndex
     {
         this.calendars = calendars;
     }
-    public UserCalendarIndex(){}
 
-    public UserCalendarIndex() {}
+    public UserCalendarIndex(){}
 
     public ArrayList<Calendar> getCalendars()
     {
