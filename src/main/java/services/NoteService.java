@@ -6,6 +6,8 @@ import models.db_models.Note;
 import java.sql.*;
 import java.util.ArrayList;
 
+import static services.ServiceOptions.logErrors;
+
 public class NoteService {
     private Connection connection;
     private ResultSet resultSet;
@@ -30,7 +32,8 @@ public class NoteService {
             connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
         } catch (Exception e)
         {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
         }
     }
 
@@ -61,7 +64,8 @@ public class NoteService {
             else
                 return null;
         } catch (SQLException e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return null;
         }
     }
@@ -80,7 +84,8 @@ public class NoteService {
             int added = ADD_PSTM.executeUpdate();
             return added>0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }
@@ -100,7 +105,8 @@ public class NoteService {
             int updated = UPDATE_PSTM.executeUpdate();
             return updated>0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }
@@ -117,7 +123,8 @@ public class NoteService {
             int deleted = DELETE_PSTM.executeUpdate();
             return deleted>0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }
@@ -146,7 +153,8 @@ public class NoteService {
             }
             return notes;
         } catch (SQLException e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return null;
         }
     }

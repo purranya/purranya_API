@@ -6,6 +6,8 @@ import models.db_models.Calendar;
 import java.sql.*;
 import java.util.ArrayList;
 
+import static services.ServiceOptions.logErrors;
+
 public class CalendarService {
     private Connection connection;
 
@@ -29,7 +31,8 @@ public class CalendarService {
             connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
         } catch (Exception e)
         {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
         }
     }
 
@@ -57,7 +60,8 @@ public class CalendarService {
             else
                 return null;
         } catch (Exception e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return null;
         }
     }
@@ -73,7 +77,8 @@ public class CalendarService {
             int addedCount = ADD_PSTM.executeUpdate();
             return addedCount>0;
         } catch (Exception e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }
@@ -90,7 +95,8 @@ public class CalendarService {
             int updatedCount = UPDATE_PSTM.executeUpdate();
             return updatedCount>0;
         } catch (Exception e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }
@@ -128,7 +134,8 @@ public class CalendarService {
             }
             return calendars;
         } catch (Exception e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return null;
         }
     }

@@ -6,6 +6,8 @@ import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 
+import static services.ServiceOptions.logErrors;
+
 public class UserService
 {
     private Connection connection;
@@ -30,7 +32,8 @@ public class UserService
             connection = DriverManager.getConnection(db.get("jdbc_conn"), db.get("db_username"), db.get("db_password"));
         } catch (Exception e)
         {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
         }
     }
 
@@ -53,7 +56,8 @@ public class UserService
             return added > 0;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }
@@ -78,7 +82,8 @@ public class UserService
             return u;
         } catch ( Exception e )
         {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return null;
         }
     }
@@ -102,7 +107,8 @@ public class UserService
             return u;
         } catch ( Exception e )
         {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return null;
         }
     }
@@ -125,7 +131,8 @@ public class UserService
 
         } catch ( Exception e )
         {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }
@@ -143,7 +150,8 @@ public class UserService
 
         } catch ( Exception e )
         {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }

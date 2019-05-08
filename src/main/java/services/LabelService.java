@@ -6,6 +6,8 @@ import models.db_models.Label;
 import java.sql.*;
 import java.util.ArrayList;
 
+import static services.ServiceOptions.logErrors;
+
 public class LabelService {
     private Connection connection;
 
@@ -29,7 +31,8 @@ public class LabelService {
             connection = DriverManager.getConnection(dbInfo.get("jdbc_conn"), dbInfo.get("db_username"), dbInfo.get("db_password"));
         } catch (Exception e)
         {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
         }
     }
 
@@ -62,7 +65,8 @@ public class LabelService {
             else
                 return null;
         } catch(SQLException e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return null;
         }
     }
@@ -83,7 +87,8 @@ public class LabelService {
             int added = ADD_PSTM.executeUpdate();
             return added>0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }
@@ -105,7 +110,8 @@ public class LabelService {
             int updated = UPDATE_PSTM.executeUpdate();
             return updated>0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }
@@ -122,7 +128,8 @@ public class LabelService {
             int deleted = DELETE_PSTM.executeUpdate();
             return deleted>0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return false;
         }
     }
@@ -152,7 +159,8 @@ public class LabelService {
             }
             return labels;
         } catch(SQLException e) {
-            e.printStackTrace();
+            if(logErrors())
+                e.printStackTrace();
             return null;
         }
     }
