@@ -41,6 +41,9 @@ public class CalendarService {
     }
 
     public Calendar getById(Long id) {
+        if(id == null)
+            return null;
+
         try {
             if(SELECT_BY_ID_PSTM==null)
                 SELECT_BY_ID_PSTM = connection.prepareStatement(SQL_SELECT_BY_ID);
@@ -67,6 +70,9 @@ public class CalendarService {
     }
 
     public boolean add(Calendar calendar) {
+        if(calendar == null)
+            return false;
+
         try {
             if(ADD_PSTM==null)
                 ADD_PSTM = connection.prepareStatement(SQL_ADD);
@@ -84,6 +90,9 @@ public class CalendarService {
     }
 
     public boolean update(Calendar calendar) {
+        if(calendar == null)
+            return false;
+
         try {
             if(UPDATE_PSTM==null)
                 UPDATE_PSTM = connection.prepareStatement(SQL_UPDATE);
@@ -102,6 +111,9 @@ public class CalendarService {
     }
 
     public boolean delete(Long id) {
+        if(id == null)
+            return false;
+
         try {
             if(DELETE_PSTM==null)
             DELETE_PSTM = connection.prepareStatement(SQL_DELETE);
@@ -116,6 +128,9 @@ public class CalendarService {
 
     public ArrayList<Calendar> getByUserId(Long userId)
     {
+        if(userId == null)
+            return null;
+
         try {
             if(SELECT_BY_USER_PSTM==null)
                 SELECT_BY_USER_PSTM = connection.prepareStatement(SQL_SELECT_BY_USER);
