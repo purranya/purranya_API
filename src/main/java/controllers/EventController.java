@@ -56,4 +56,66 @@ public class EventController {
         } else
             return objectMapper.writeValueAsString(OperationStatus.OPERATION_FAILED);
     }
+
+    @RequestMapping(value = "/event/edit",method = RequestMethod.POST)
+    public String editEvent(@RequestParam("login") String login,@RequestParam("model") String model) throws Exception {
+        if (userService == null)
+            userService = new UserService();
+        if (calendarService == null)
+            calendarService = new CalendarService();
+        if (labelService == null)
+            labelService = new LabelService();
+        if (eventService == null)
+            eventService = new EventService();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Login loginOM = objectMapper.readValue(login, Login.class);
+        Event eventOM = objectMapper.readValue(model, Event.class);
+
+        User user = userService.getByLogin(
+                loginOM.getUsername(), PasswordUtils.sha256(loginOM.getPassword()));
+        Calendar calendar = calendarService.getById(eventOM.getCalendar_id());
+        Label label = labelService.getById(eventOM.getLabel_id());
+
+        if (user != null && calendar != null && label != null &&
+                !eventOM.getCalendar_id().equals(calendar.getId()) &&
+                !eventOM.getLabel_id().equals(label.getId())) {
+            if (eventService.update(eventOM))
+                return objectMapper.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
+            else
+                return objectMapper.writeValueAsString(OperationStatus.OPERATION_FAILED);
+        } else
+            return objectMapper.writeValueAsString(OperationStatus.OPERATION_FAILED);
+    }
+
+    @RequestMapping(value = "/event/delete",method = RequestMethod.POST)
+    public String deleteEvent(@RequestParam("login") String login,@RequestParam("model") String model) throws Exception {
+        if (userService == null)
+            userService = new UserService();
+        if (calendarService == null)
+            calendarService = new CalendarService();
+        if (labelService == null)
+            labelService = new LabelService();
+        if (eventService == null)
+            eventService = new EventService();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Login loginOM = objectMapper.readValue(login, Login.class);
+        Event eventOM = objectMapper.readValue(model, Event.class);
+
+        User user = userService.getByLogin(
+                loginOM.getUsername(), PasswordUtils.sha256(loginOM.getPassword()));
+        Calendar calendar = calendarService.getById(eventOM.getCalendar_id());
+        Label label = labelService.getById(eventOM.getLabel_id());
+
+        if (user != null && calendar != null && label != null &&
+                !eventOM.getCalendar_id().equals(calendar.getId()) &&
+                !eventOM.getLabel_id().equals(label.getId())) {
+            if (eventService.delete(eventOM.getId()))
+                return objectMapper.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
+            else
+                return objectMapper.writeValueAsString(OperationStatus.OPERATION_FAILED);
+        } else
+            return objectMapper.writeValueAsString(OperationStatus.OPERATION_FAILED);
+    }
 }
