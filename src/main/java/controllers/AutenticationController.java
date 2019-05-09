@@ -4,8 +4,7 @@ import utils.PasswordUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.db_models.User;
 import models.transfer_models.Login;
-import models.status_models.LOGIN_STATUS;
-import models.status_models.REGISTRE_STATUS;
+import models.transfer_models.OperationStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import services.UserService;
@@ -17,7 +16,7 @@ public class AutenticationController
     UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestParam("json") String params)
+    public String login(@RequestParam("login") String login)
     {
         if(userService==null)
             userService = new UserService();
@@ -26,7 +25,7 @@ public class AutenticationController
         Login l = null;
 
         try{
-            l = om.readValue(params,Login.class);
+            l = om.readValue(login,Login.class);
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -37,18 +36,18 @@ public class AutenticationController
         try
         {
             if (u != null)
-                return om.writeValueAsString(LOGIN_STATUS.LOGIN_SUCCESS);
+                return om.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
             else
-                return om.writeValueAsString(LOGIN_STATUS.LOGIN_FAILED);
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
         } catch ( Exception e )
         {
             e.printStackTrace();
-            return "LOGIN_ERROR";
+            return "OPERATION_FAILED";
         }
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@RequestParam("json") String params)
+    public String register(@RequestParam("login") String login)
     {
         if(userService==null)
             userService = new UserService();
@@ -57,7 +56,7 @@ public class AutenticationController
         Login l = null;
 
         try{
-            l = om.readValue(params,Login.class);
+            l = om.readValue(login,Login.class);
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -69,20 +68,20 @@ public class AutenticationController
         {
             boolean added = userService.add(u);
             if(added)
-                return om.writeValueAsString(REGISTRE_STATUS.REGISTER_SUCCESS);
+                return om.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
             else
-                return om.writeValueAsString(REGISTRE_STATUS.REGISTER_FAILED);
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
         } catch ( Exception e )
         {
             try
             {
-                return om.writeValueAsString(REGISTRE_STATUS.REGISTER_FAILED);
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
             } catch ( Exception e2 )
             {
                 e.printStackTrace();
             }
         }
 
-        return "REGISTER_FAILED";
+        return "OPERATION_FAILED";
     }
 }
