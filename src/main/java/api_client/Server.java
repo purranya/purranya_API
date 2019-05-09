@@ -109,25 +109,29 @@ public class Server
         return index;
     }
 
-    public static boolean addCalendar(String username, String password, Calendar calendar)
+    public static <T> boolean modelAction(String username, String password, T model, ModelAction action)
     {
         HashMap<String,String> params = new HashMap<>();
         ObjectMapper om = new ObjectMapper();
 
         Login l = new Login(username,password);
-
         String response = null;
-        try
+
+        if(model instanceof Calendar)
         {
-            params.put("login",om.writeValueAsString(l));
-            params.put("model",om.writeValueAsString(calendar));
-            response = new HTTPSClient().post("https://127.0.0.1:8443//calendar/add",params);
-        } catch (Exception e)
-        {
-            System.err.println("Could not connect to server");
-            e.printStackTrace();
-            return false;
-        }
+            Calendar calendar = (Calendar)model;
+            try
+            {
+                params.put("login", om.writeValueAsString(l));
+                params.put("model", om.writeValueAsString(calendar));
+                response = new HTTPSClient().post("https://127.0.0.1:8443//calendar/" + action.toString(), params);
+            } catch (Exception e)
+            {
+                System.err.println("Could not connect to server");
+                e.printStackTrace();
+                return false;
+            }
+        } // TUTAJ DALSZE DODAWANIA
 
         OperationStatus answer = null;
 

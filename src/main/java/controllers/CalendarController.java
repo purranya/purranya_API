@@ -188,6 +188,4 @@ public class CalendarController
         else
             return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
     }
-
-
 }
