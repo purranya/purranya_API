@@ -1,18 +1,14 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.db_models.Calendar;
-import models.db_models.User;
-import models.transfer_models.OperationStatus;
-import models.transfer_models.Login;
-import models.transfer_models.UserCalendarIndex;
+import models.db_models.*;
+import models.transfer_models.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import services.CalendarService;
-import services.UserService;
+import services.*;
 import utils.PasswordUtils;
 
 import java.io.IOException;
@@ -75,11 +71,123 @@ public class CalendarController
         {
             c.setUser_id(u.getId());
             if(calendarService.add(c))
-                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+                return om.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
             else
                 return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
         }
         else
             return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
     }
+
+    @RequestMapping(value = "/calendar/edit",method = RequestMethod.POST)
+    public String editCalendar(@RequestParam("login") String login,@RequestParam("model") String model) throws Exception
+    {
+        if(userService==null)
+            userService = new UserService();
+        if(calendarService==null)
+            calendarService = new CalendarService();
+
+        ObjectMapper om = new ObjectMapper();
+        Login l = om.readValue(login, Login.class);
+        Calendar c = om.readValue(model,Calendar.class);
+
+        User u = userService.getByLogin(l.getUsername(), PasswordUtils.sha256(l.getPassword()));
+
+        if(u!=null)
+        {
+            Calendar calendar = calendarService.getById(c.getId());
+            if(calendar==null)
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+
+            if(!calendar.getUser_id().equals(u.getId()))
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+
+            if(!calendar.getUser_id().equals(c.getUser_id()))
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+
+            if(calendarService.update(c))
+                return om.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
+            else
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+        }
+        else
+            return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+    }
+
+    @RequestMapping(value = "/calendar/delete",method = RequestMethod.POST)
+    public String deleteCalendar(@RequestParam("login") String login,@RequestParam("model") String model) throws Exception
+    {
+        if(userService==null)
+            userService = new UserService();
+        if(calendarService==null)
+            calendarService = new CalendarService();
+
+        ObjectMapper om = new ObjectMapper();
+        Login l = om.readValue(login, Login.class);
+        Calendar c = om.readValue(model,Calendar.class);
+
+        User u = userService.getByLogin(l.getUsername(), PasswordUtils.sha256(l.getPassword()));
+
+        if(u!=null)
+        {
+            Calendar calendar = calendarService.getById(c.getId());
+            if(calendar==null)
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+
+            if(!calendar.getUser_id().equals(u.getId()))
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+
+            if(!calendar.getUser_id().equals(c.getUser_id()))
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+
+            if(calendarService.delete(calendar.getId()))
+                return om.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
+            else
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+        }
+        else
+            return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+    }
+
+    @RequestMapping(value = "/calendar/get",method = RequestMethod.POST)
+    public String getCalendar(@RequestParam("login") String login,@RequestParam("model") String model) throws Exception
+    {
+        if(userService==null)
+            userService = new UserService();
+        if(calendarService==null)
+            calendarService = new CalendarService();
+
+        ObjectMapper om = new ObjectMapper();
+        Login l = om.readValue(login, Login.class);
+        Calendar c = om.readValue(model,Calendar.class);
+
+        User u = userService.getByLogin(l.getUsername(), PasswordUtils.sha256(l.getPassword()));
+
+        if(u!=null)
+        {
+            Calendar calendar = calendarService.getById(c.getId());
+            if(calendar==null)
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+
+            if(!calendar.getUser_id().equals(u.getId()))
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+
+            if(!calendar.getUser_id().equals(c.getUser_id()))
+                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+
+            EventService eventService = new EventService();
+            LabelService labelService = new LabelService();
+
+            ArrayList<Event> events = eventService.getByCalendar(calendar.getId());
+            ArrayList<Label> labels = labelService.getByCalendar(calendar.getId());
+
+            UserCalendar us = new UserCalendar(calendar,labels,events);
+
+            return om.writeValueAsString(us);
+        }
+        else
+            return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+    }
+
+
 }
