@@ -167,13 +167,13 @@ public class CalendarController
         {
             Calendar calendar = calendarService.getById(c.getId());
             if(calendar==null)
-                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+                return om.writeValueAsString(null);
 
             if(!calendar.getUser_id().equals(u.getId()))
-                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+                return om.writeValueAsString(null);
 
             if(!calendar.getUser_id().equals(c.getUser_id()))
-                return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+                return om.writeValueAsString(null);
 
             EventService eventService = new EventService();
             LabelService labelService = new LabelService();
@@ -186,6 +186,6 @@ public class CalendarController
             return om.writeValueAsString(us);
         }
         else
-            return om.writeValueAsString(OperationStatus.OPERATION_FAILED);
+            return om.writeValueAsString(null);
     }
 }
