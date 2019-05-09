@@ -46,11 +46,11 @@ public class EventController {
         Calendar calendar = calendarService.getById(eventOM.getCalendar_id());
         Label label = labelService.getById(eventOM.getLabel_id());
 
-        if (user != null &&
+        if (user != null && calendar != null && label != null &&
                 !eventOM.getCalendar_id().equals(calendar.getId()) &&
                 !eventOM.getLabel_id().equals(label.getId())) {
             if (eventService.add(eventOM))
-                return objectMapper.writeValueAsString(OperationStatus.OPERATION_FAILED);
+                return objectMapper.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
             else
                 return objectMapper.writeValueAsString(OperationStatus.OPERATION_FAILED);
         } else
