@@ -69,13 +69,13 @@ public class Calendar
 
     public boolean isNameValid() {
         return (name != null &&
-                length(name, 1, 50) &&
+                length(name, 2, 50) &&
                 name(name));
     }
 
     public boolean isCommentValid() {
         return (comment != null &&
-                length(comment, 0, 255));
+                length(comment, 1, 255));
     }
 
     public boolean isUserIdValid() {
