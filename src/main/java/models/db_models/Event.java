@@ -1,10 +1,13 @@
 package models.db_models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
 
 import static utils.ValidationUtils.length;
 import static utils.ValidationUtils.name;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Event
 {
     private Long id;
@@ -30,6 +33,7 @@ public class Event
         this.calendar_id = calendar_id;
     }
 
+    @JsonProperty
     public Long getId() {
         return id;
     }
@@ -38,6 +42,7 @@ public class Event
         this.id = id;
     }
 
+    @JsonProperty
     public String getName() {
         return name;
     }
@@ -46,6 +51,7 @@ public class Event
         this.name = name;
     }
 
+    @JsonProperty
     public String getComment() {
         return comment;
     }
@@ -54,6 +60,7 @@ public class Event
         this.comment = comment;
     }
 
+    @JsonProperty
     public DateTime getStartDate() {
         return startDate;
     }
@@ -62,6 +69,7 @@ public class Event
         this.startDate = startDate;
     }
 
+    @JsonProperty
     public DateTime getEndDate() {
         return endDate;
     }
@@ -70,6 +78,7 @@ public class Event
         this.endDate = endDate;
     }
 
+    @JsonProperty
     public Long getLabel_id() {
         return label_id;
     }
@@ -78,6 +87,7 @@ public class Event
         this.label_id = label_id;
     }
 
+    @JsonProperty
     public Long getCalendar_id() {
         return calendar_id;
     }

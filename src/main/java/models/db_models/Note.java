@@ -1,8 +1,12 @@
 package models.db_models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import static utils.ValidationUtils.length;
 import static utils.ValidationUtils.name;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Note
 {
     private Long id;
@@ -21,6 +25,7 @@ public class Note
         this.user_id = user_id;
     }
 
+    @JsonProperty
     public Long getId()
     {
         return id;
@@ -31,6 +36,7 @@ public class Note
         this.id = id;
     }
 
+    @JsonProperty
     public String getName()
     {
         return name;
@@ -41,6 +47,7 @@ public class Note
         this.name = name;
     }
 
+    @JsonProperty
     public String getComment()
     {
         return comment;
@@ -51,6 +58,7 @@ public class Note
         this.comment = comment;
     }
 
+    @JsonProperty
     public Long getUser_id()
     {
         return user_id;

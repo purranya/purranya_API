@@ -1,7 +1,10 @@
 package models.db_models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import utils.ValidationUtils;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User
 {
     private Long id;
@@ -15,6 +18,7 @@ public class User
         this.password_hash = password_hash;
     }
 
+    @JsonProperty
     public Long getId()
     {
         return id;
@@ -25,6 +29,7 @@ public class User
         this.id = id;
     }
 
+    @JsonProperty
     public String getUsername()
     {
         return username;
@@ -35,6 +40,7 @@ public class User
         this.username = username;
     }
 
+    @JsonProperty
     public String getPassword_hash()
     {
         return password_hash;

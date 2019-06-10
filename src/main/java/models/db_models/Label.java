@@ -1,8 +1,12 @@
 package models.db_models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import static utils.ValidationUtils.length;
 import static utils.ValidationUtils.name;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Label
 {
     private Long id;
@@ -23,6 +27,7 @@ public class Label
         this.calendar_id = calendar_id;
     }
 
+    @JsonProperty
     public Long getId() {
         return id;
     }
@@ -31,6 +36,7 @@ public class Label
         this.id = id;
     }
 
+    @JsonProperty
     public String getName() {
         return name;
     }
@@ -39,6 +45,7 @@ public class Label
         this.name = name;
     }
 
+    @JsonProperty
     public int getColor_r() {
         return color_r;
     }
@@ -47,6 +54,7 @@ public class Label
         this.color_r = color_r;
     }
 
+    @JsonProperty
     public int getColor_b() {
         return color_b;
     }
@@ -55,6 +63,7 @@ public class Label
         this.color_b = color_b;
     }
 
+    @JsonProperty
     public int getColor_g() {
         return color_g;
     }
@@ -63,6 +72,7 @@ public class Label
         this.color_g = color_g;
     }
 
+    @JsonProperty
     public Long getCalendar_id() {
         return calendar_id;
     }
