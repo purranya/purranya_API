@@ -1,10 +1,5 @@
-mvn compile
-if [ #? -ne "0" ]
-then
-    exit
-fi
 mvn package -Dmaven.test.skip=true
-if [ #? -ne "0" ]
+if [ "$?" -ne "0" ]
 then
     exit
 fi
