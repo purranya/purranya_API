@@ -114,5 +114,9 @@ public class Label
         return calendar_id != null && calendar_id > 0;
     }
 
-
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }

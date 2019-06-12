@@ -42,7 +42,7 @@ public class LabelController {
         Calendar calendar = calendarService.getById(labelOM.getCalendar_id());
 
         if (user != null && calendar != null &&
-                !labelOM.getCalendar_id().equals(calendar.getId())) {
+                calendar.getUser_id().equals(user.getId())) {
             if (labelService.add(labelOM))
                 return objectMapper.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
             else
@@ -68,7 +68,7 @@ public class LabelController {
         Calendar calendar = calendarService.getById(labelOM.getCalendar_id());
 
         if (user != null && calendar != null &&
-                !labelOM.getCalendar_id().equals(calendar.getId())) {
+                calendar.getUser_id().equals(user.getId())) {
             if (labelService.update(labelOM))
                 return objectMapper.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
             else
@@ -94,7 +94,7 @@ public class LabelController {
         Calendar calendar = calendarService.getById(labelOM.getCalendar_id());
 
         if (user != null && calendar != null &&
-                !labelOM.getCalendar_id().equals(calendar.getId())) {
+                calendar.getUser_id().equals(user.getId())) {
             if (labelService.delete(labelOM.getId()))
                 return objectMapper.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
             else

@@ -16,7 +16,7 @@ public class EventService {
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
     private static String SQL_SELECT_BY_ID = "SELECT \"id\",\"name\",\"comment\",\"start_date\",\"end_date\",\"calendar_id\",\"label_id\" FROM Event WHERE \"id\"=? LIMIT 1";
-    private static String SQL_ADD = "INSERT INTO Event(\"id\", \"name\", \"comment\", \"start_date\", \"end_date\", \"calendar_id\", \"label_id\") VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static String SQL_ADD = "INSERT INTO Event(\"name\", \"comment\", \"start_date\", \"end_date\", \"calendar_id\", \"label_id\") VALUES (?, ?, ?, ?, ?, ?)";
     private static String SQL_UPDATE = "UPDATE Event SET \"name\" = ?, \"comment\" = ?, \"start_date\" = ?, \"end_date\" = ?, \"calendar_id\" = ?, \"label_id\" = ? WHERE \"id\" = ?";
     private static String SQL_DELETE = "DELETE FROM Event WHERE \"id\" = ?";
     private static String SQL_SELECT_BY_CALENDAR = "SELECT \"id\",\"name\",\"comment\",\"start_date\",\"end_date\",\"calendar_id\",\"label_id\" FROM Event WHERE \"calendar_id\"=?";
@@ -85,13 +85,12 @@ public class EventService {
             if(ADD_PSTM==null)
                 ADD_PSTM = connection.prepareStatement(SQL_ADD);
 
-            ADD_PSTM.setLong(1, event.getId());
-            ADD_PSTM.setString(2, event.getName());
-            ADD_PSTM.setString(3, event.getComment());
-            ADD_PSTM.setTimestamp(4, new Timestamp(event.getStartDate().getMillis()));
-            ADD_PSTM.setTimestamp(5, new Timestamp(event.getEndDate().getMillis()));
-            ADD_PSTM.setLong(6, event.getCalendar_id());
-            ADD_PSTM.setLong(7, event.getLabel_id());
+            ADD_PSTM.setString(1, event.getName());
+            ADD_PSTM.setString(2, event.getComment());
+            ADD_PSTM.setTimestamp(3, new Timestamp(event.getStartDate().getMillis()));
+            ADD_PSTM.setTimestamp(4, new Timestamp(event.getEndDate().getMillis()));
+            ADD_PSTM.setLong(5, event.getCalendar_id());
+            ADD_PSTM.setLong(6, event.getLabel_id());
             int added = ADD_PSTM.executeUpdate();
             return added>0;
         } catch(SQLException e) {

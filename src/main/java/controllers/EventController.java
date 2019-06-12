@@ -1,6 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import models.db_models.Calendar;
 import models.db_models.Event;
 import models.db_models.Label;
@@ -38,6 +39,7 @@ public class EventController {
             eventService = new EventService();
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JodaModule());
         Login loginOM = objectMapper.readValue(login, Login.class);
         Event eventOM = objectMapper.readValue(model, Event.class);
 
@@ -47,8 +49,7 @@ public class EventController {
         Label label = labelService.getById(eventOM.getLabel_id());
 
         if (user != null && calendar != null && label != null &&
-                !eventOM.getCalendar_id().equals(calendar.getId()) &&
-                !eventOM.getLabel_id().equals(label.getId())) {
+                calendar.getUser_id().equals(user.getId())) {
             if (eventService.add(eventOM))
                 return objectMapper.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
             else
@@ -69,6 +70,7 @@ public class EventController {
             eventService = new EventService();
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JodaModule());
         Login loginOM = objectMapper.readValue(login, Login.class);
         Event eventOM = objectMapper.readValue(model, Event.class);
 
@@ -78,8 +80,7 @@ public class EventController {
         Label label = labelService.getById(eventOM.getLabel_id());
 
         if (user != null && calendar != null && label != null &&
-                !eventOM.getCalendar_id().equals(calendar.getId()) &&
-                !eventOM.getLabel_id().equals(label.getId())) {
+                calendar.getUser_id().equals(user.getId())) {
             if (eventService.update(eventOM))
                 return objectMapper.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
             else
@@ -100,6 +101,7 @@ public class EventController {
             eventService = new EventService();
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JodaModule());
         Login loginOM = objectMapper.readValue(login, Login.class);
         Event eventOM = objectMapper.readValue(model, Event.class);
 
@@ -109,8 +111,7 @@ public class EventController {
         Label label = labelService.getById(eventOM.getLabel_id());
 
         if (user != null && calendar != null && label != null &&
-                !eventOM.getCalendar_id().equals(calendar.getId()) &&
-                !eventOM.getLabel_id().equals(label.getId())) {
+                calendar.getUser_id().equals(user.getId())) {
             if (eventService.delete(eventOM.getId()))
                 return objectMapper.writeValueAsString(OperationStatus.OPERATION_SUCCESS);
             else

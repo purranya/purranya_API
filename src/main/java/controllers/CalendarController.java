@@ -1,6 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import models.db_models.*;
 import models.transfer_models.*;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ public class CalendarController
             calendarService = new CalendarService();
 
         ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JodaModule());
         String answer;
         if(userService==null)
             userService = new UserService();
@@ -62,6 +64,7 @@ public class CalendarController
             calendarService = new CalendarService();
 
         ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JodaModule());
         Login l = om.readValue(login, Login.class);
         Calendar c = om.readValue(model,Calendar.class);
 
@@ -88,6 +91,7 @@ public class CalendarController
             calendarService = new CalendarService();
 
         ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JodaModule());
         Login l = om.readValue(login, Login.class);
         Calendar c = om.readValue(model,Calendar.class);
 
@@ -123,6 +127,7 @@ public class CalendarController
             calendarService = new CalendarService();
 
         ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JodaModule());
         Login l = om.readValue(login, Login.class);
         Calendar c = om.readValue(model,Calendar.class);
 
@@ -158,6 +163,7 @@ public class CalendarController
             calendarService = new CalendarService();
 
         ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JodaModule());
         Login l = om.readValue(login, Login.class);
         Calendar c = om.readValue(model,Calendar.class);
 

@@ -105,11 +105,11 @@ public class Event
     }
 
     public boolean isStartDateValid() {
-        return (startDate.isBefore(endDate) || startDate.isEqual(endDate));
+        return startDate != null && (startDate.isBefore(endDate) || startDate.isEqual(endDate));
     }
 
     public boolean isEndDateValid() {
-        return (endDate.isAfter(startDate) || endDate.isEqual(startDate));
+        return endDate != null && (endDate.isAfter(startDate) || endDate.isEqual(startDate));
     }
 
     public boolean isLabelIdValid() {
